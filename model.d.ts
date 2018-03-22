@@ -1,4 +1,4 @@
-import { AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AsyncValidatorFn, ValidationErrors, ValidatorFn} from '@angular/forms';
 import { AbstractControlOptions, FormHooks } from '@angular/forms/src/model';
 import { Observable } from 'rxjs/Observable';
 
@@ -94,8 +94,8 @@ export declare abstract class AbstractControl<T> {
   }): void;
 
   get<K extends keyof T>(path: K): AbstractControl<T[K]>;
-
   // get(path: Array<string | number> | string): AbstractControl<any> | null;
+
   getError(errorCode: string, path?: string[]): any;
 
   hasError(errorCode: string, path?: string[]): boolean;
@@ -106,8 +106,8 @@ export declare class FormArray<T> extends FormArrayInternal<T, T[]> {
 
 declare class FormArrayInternal<T, S extends Array<T>> extends AbstractControl<S> {
   constructor(controls: AbstractControl<T>[],
-              validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-              asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
+    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
 
   controls: AbstractControl<T>[];
 
@@ -143,14 +143,14 @@ declare class FormArrayInternal<T, S extends Array<T>> extends AbstractControl<S
   private _registerControl(control);
 }
 
-type Controls<T> = {[P in keyof T]: AbstractControl<T[P]>};
+export type Controls<T> = {[P in keyof T]: AbstractControl<T[P]>};
 
 export declare class FormGroup<T> extends AbstractControl<T> {
   controls: Controls<T>;
 
   constructor(controls: Controls<T>,
-              validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-              asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
+    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
 
   registerControl(name: string, control: AbstractControl<any>): AbstractControl<any>;
 
@@ -183,9 +183,9 @@ export declare class FormGroup<T> extends AbstractControl<T> {
 }
 
 export declare class FormControl<T> extends AbstractControl<T> {
-  constructor(formState?: T,
-              validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-              asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
+  constructor(formState?: T | { value: T, disabled: boolean },
+    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
 
   setValue(value: T, options?: {
     onlySelf?: boolean;
@@ -209,23 +209,23 @@ export declare class FormControl<T> extends AbstractControl<T> {
   registerOnChange(fn: Function): void;
 
   registerOnDisabledChange(fn: (isDisabled: boolean) => void): void;
-
-  private _applyFormState(formState);
 }
-
 
 export declare class FormBuilder {
 
   group<T>(controlsConfig: ControlsConfig<T>, extra?: { [key: string]: any }): FormGroup<T>;
 
-  control<T>(value: T,
-             validator?: ValidatorFn | ValidatorFn[] | null,
-             asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null): FormControl<T>;
+  control<T>(value: ControlConfig<T>,
+    validator?: ValidatorFn | ValidatorFn[] | null,
+    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null): FormControl<T>;
 
   array<T>(controlsConfig: ControlsConfigArray<T>[],
-           validator?: ValidatorFn | null,
-           asyncValidator?: AsyncValidatorFn | null): FormArray<T>;
+    validator?: ValidatorFn | null,
+    asyncValidator?: AsyncValidatorFn | null): FormArray<T>;
 }
 
-type ControlsConfig<T> = T | {[P in keyof T]: T[P] | AbstractControl<T[P]> | FormControl<T[P]> | FormArray<T[P]> | FormGroup<T[P]>};
+type  ControlConfig<T> = T | { value: T, disabled: boolean };
+
+type ControlsConfig<T> = ControlConfig<T> |
+  {[P in keyof T]: T[P] | AbstractControl<T[P]> | FormControl<T[P]> | FormArray<T[P]> | FormGroup<T[P]>};
 type ControlsConfigArray<T> = T | AbstractControl<T>;
