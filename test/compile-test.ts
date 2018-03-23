@@ -26,6 +26,9 @@ const control2: FormControl<string> = fb.control({value: '', disabled: true});
 const c: FormArray<string> = fb.array<string>(['2345', 'ieiae', fb.control<string>('uieie')]);
 const d: FormArray<string> = fb.array<string>([fb.control<string>('uieie')]);
 const e: FormArray<Bar> = fb.array([fb.control({prop: ''})]);
+
+const s: AbstractControl<string> = c.get('toString');
+
 d.setValue(['foo', 'bar']);
 const namecontrol: AbstractControl<string> = formgroup.get('name');
 const lairs: AbstractControl<Address[]> = formgroup.get('secretLairs');
@@ -44,3 +47,7 @@ const group1: FormGroup<Bar> = fb.group<Bar>([{prop: ''}]);
 const group2: FormGroup<Bar> = fb.group<Bar>([{value: {prop: ''}, disabled:true}]);
 const group3: FormGroup<Bar> = fb.group<Bar>([{prop: ''}, Validators.required]);
 const group4: FormGroup<Bar> = fb.group<Bar>([{prop: ''}, [Validators.required, Validators.minLength(5)]]);
+
+const formGroupFoo: FormGroup<Foo> = undefined;
+const group6: AbstractControl<Bar> = formGroupFoo.get(['field']);
+const group7: AbstractControl<string> = formGroupFoo.get(['field', 'prop']);

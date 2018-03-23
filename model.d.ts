@@ -94,6 +94,12 @@ export declare abstract class AbstractControl<T> {
   }): void;
 
   get<K extends keyof T>(path: K): AbstractControl<T[K]>;
+  get<K1 extends keyof T>(path: [K1]): AbstractControl<T[K1]>;
+  get<K1 extends keyof T, K2 extends keyof T[K1]>(path: [K1, K2]): AbstractControl<T[K1][K2]>;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3]>;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4]>;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4][K5]>;
+
 
   // get(path: Array<string | number> | string): AbstractControl<any> | null;
 
@@ -102,8 +108,8 @@ export declare abstract class AbstractControl<T> {
   hasError(errorCode: string, path?: string[]): boolean;
 }
 
-
 export declare class FormArray<T> extends AbstractControl<T[]> {
+
   constructor(controls: AbstractControl<T>[],
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
@@ -113,6 +119,12 @@ export declare class FormArray<T> extends AbstractControl<T[]> {
   readonly length: number;
 
   at(index: number): AbstractControl<T>;
+
+  get<K1 extends keyof T>(path: [K1]): null;
+  get<K1 extends keyof T, K2 extends keyof T[K1]>(path: [K1, K2]): null;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): null;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): null;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): null;
 
   push(control: AbstractControl<T>): void;
 
@@ -202,6 +214,13 @@ export declare class FormControl<T> extends AbstractControl<T> {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void;
+
+  get<K extends keyof T>(path: K): null;
+  get<K1 extends keyof T>(path: [K1]): null;
+  get<K1 extends keyof T, K2 extends keyof T[K1]>(path: [K1, K2]): null;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): null;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): null;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): null;
 
   registerOnChange(fn: Function): void;
 
