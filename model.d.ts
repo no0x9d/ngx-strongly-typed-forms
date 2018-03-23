@@ -1,6 +1,6 @@
-import { AsyncValidatorFn, ValidationErrors, ValidatorFn} from '@angular/forms';
-import { AbstractControlOptions, FormHooks } from '@angular/forms/src/model';
-import { Observable } from 'rxjs/Observable';
+import {AsyncValidatorFn, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {AbstractControlOptions, FormHooks} from '@angular/forms/src/model';
+import {Observable} from 'rxjs/Observable';
 
 export declare abstract class AbstractControl<T> {
   constructor(validator: ValidatorFn | null, asyncValidator: AsyncValidatorFn | null);
@@ -94,6 +94,7 @@ export declare abstract class AbstractControl<T> {
   }): void;
 
   get<K extends keyof T>(path: K): AbstractControl<T[K]>;
+
   // get(path: Array<string | number> | string): AbstractControl<any> | null;
 
   getError(errorCode: string, path?: string[]): any;
@@ -183,7 +184,7 @@ export declare class FormGroup<T> extends AbstractControl<T> {
 }
 
 export declare class FormControl<T> extends AbstractControl<T> {
-  constructor(formState?: T | { value: T, disabled: boolean },
+  constructor(formState?: ControlConfig<T>,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
 
@@ -225,7 +226,11 @@ export declare class FormBuilder {
 }
 
 type  ControlConfig<T> = T | { value: T, disabled: boolean };
+type StateAndValidators<T> = [ControlConfig<T>] |
+  [ControlConfig<T>, ValidatorFn | ValidatorFn[]] |
+  [ControlConfig<T>, ValidatorFn | ValidatorFn[] | null, AsyncValidatorFn | AsyncValidatorFn[] | null]
 
 type ControlsConfig<T> = ControlConfig<T> |
-  {[P in keyof T]: T[P] | AbstractControl<T[P]> | FormControl<T[P]> | FormArray<T[P]> | FormGroup<T[P]>};
-type ControlsConfigArray<T> = T | AbstractControl<T>;
+  StateAndValidators<T> |
+  {[P in keyof T]: T[P] | AbstractControl<T[P]> | FormControl<T[P]> | FormArray<T[P]> | FormGroup<T[P]> | StateAndValidators<T>};
+type ControlsConfigArray<T> = T | AbstractControl<T> | StateAndValidators<T>;
