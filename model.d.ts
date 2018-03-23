@@ -102,10 +102,8 @@ export declare abstract class AbstractControl<T> {
   hasError(errorCode: string, path?: string[]): boolean;
 }
 
-export declare class FormArray<T> extends FormArrayInternal<T, T[]> {
-}
 
-declare class FormArrayInternal<T, S extends Array<T>> extends AbstractControl<S> {
+export declare class FormArray<T> extends AbstractControl<T[]> {
   constructor(controls: AbstractControl<T>[],
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
@@ -124,24 +122,22 @@ declare class FormArrayInternal<T, S extends Array<T>> extends AbstractControl<S
 
   setControl(index: number, control: AbstractControl<T>): void;
 
-  setValue(value: S, options?: {
+  setValue(value: T[], options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void;
 
-  patchValue(value: S, options?: {
+  patchValue(value: T[], options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void;
 
-  reset(value?: S, options?: {
+  reset(value?: T[], options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void;
 
-  getRawValue(): S;
-
-  private _registerControl(control);
+  getRawValue(): T[];
 }
 
 export type Controls<T> = {[P in keyof T]: AbstractControl<T[P]>};
