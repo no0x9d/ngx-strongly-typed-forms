@@ -93,15 +93,12 @@ export declare abstract class AbstractControl<T> {
     emitEvent?: boolean;
   }): void;
 
-  get<K extends keyof T>(path: K): AbstractControl<T[K]>;
-  get<K1 extends keyof T>(path: [K1]): AbstractControl<T[K1]>;
-  get<K1 extends keyof T, K2 extends keyof T[K1]>(path: [K1, K2]): AbstractControl<T[K1][K2]>;
-  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3]>;
-  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4]>;
-  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4][K5]>;
-
-
-  // get(path: Array<string | number> | string): AbstractControl<any> | null;
+  get<K extends keyof T>(path: K): AbstractControl<T[K]> | null;
+  get<K1 extends keyof T>(path: [K1]): AbstractControl<T[K1]> | null;
+  get<K1 extends keyof T, K2 extends keyof T[K1]>(path: [K1, K2]): AbstractControl<T[K1][K2]> | null;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3]> | null;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4]> | null;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4][K5]> | null;
 
   getError(errorCode: string, path?: string[]): any;
 
