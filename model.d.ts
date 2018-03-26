@@ -2,6 +2,15 @@ import {AsyncValidatorFn, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {AbstractControlOptions, FormHooks} from '@angular/forms/src/model';
 import {Observable} from 'rxjs/Observable';
 
+export type Controls<T> = {[P in keyof T]: AbstractControl<T[P]>};
+export type FormState<T> = T | { value: T, disabled: boolean };
+export type StateAndValidators<T> = [FormState<T>] |
+  [FormState<T>, ValidatorFn | ValidatorFn[]] |
+  [FormState<T>, ValidatorFn | ValidatorFn[] | null, AsyncValidatorFn | AsyncValidatorFn[] | null]
+
+export type ControlConfig<T> = FormState<T> | StateAndValidators<T> | AbstractControl<T> | FormArray<T>; // TODO check why AbstractControl<T> is not sufficient
+export type ControlsConfig<T> = ControlConfig<T> | {[P in keyof T]: ControlConfig<T[P]>};
+
 export declare abstract class AbstractControl<T> {
   constructor(validator: ValidatorFn | null, asyncValidator: AsyncValidatorFn | null);
 
@@ -149,8 +158,6 @@ export declare class FormArray<T> extends AbstractControl<T[]> {
   getRawValue(): T[];
 }
 
-export type Controls<T> = {[P in keyof T]: AbstractControl<T[P]>};
-
 export declare class FormGroup<T> extends AbstractControl<T> {
   controls: Controls<T>;
 
@@ -189,7 +196,7 @@ export declare class FormGroup<T> extends AbstractControl<T> {
 }
 
 export declare class FormControl<T> extends AbstractControl<T> {
-  constructor(formState?: ControlConfig<T>,
+  constructor(formState?: FormState<T>,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
 
@@ -228,21 +235,11 @@ export declare class FormBuilder {
 
   group<T>(controlsConfig: ControlsConfig<T>, extra?: { [key: string]: any }): FormGroup<T>;
 
-  control<T>(value: ControlConfig<T>,
+  control<T>(value: FormState<T>,
     validator?: ValidatorFn | ValidatorFn[] | null,
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null): FormControl<T>;
 
-  array<T>(controlsConfig: ControlsConfigArray<T>[],
+  array<T>(controlsConfig: ControlConfig<T>[],
     validator?: ValidatorFn | null,
     asyncValidator?: AsyncValidatorFn | null): FormArray<T>;
 }
-
-type  ControlConfig<T> = T | { value: T, disabled: boolean };
-type StateAndValidators<T> = [ControlConfig<T>] |
-  [ControlConfig<T>, ValidatorFn | ValidatorFn[]] |
-  [ControlConfig<T>, ValidatorFn | ValidatorFn[] | null, AsyncValidatorFn | AsyncValidatorFn[] | null]
-
-type ControlsConfig<T> = ControlConfig<T> |
-  StateAndValidators<T> |
-  {[P in keyof T]: T[P] | AbstractControl<T[P]> | FormControl<T[P]> | FormArray<T[P]> | FormGroup<T[P]> | StateAndValidators<T>};
-type ControlsConfigArray<T> = T | AbstractControl<T> | StateAndValidators<T>;
