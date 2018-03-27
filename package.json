@@ -1,9 +1,8 @@
 {
   "name": "ngx-strongly-typed-forms",
-  "version": "0.8.0",
+  "version": "0.8.0-beta.2",
   "description": "",
-  "main": "model.js",
-  "type": "model.d.ts",
+  "main": "index.js",
   "scripts": {
     "test": "tsc"
   },
