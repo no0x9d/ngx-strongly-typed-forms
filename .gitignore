@@ -2,3 +2,4 @@
 *.iml
 node_modules/
 test/out/
+ngx-strongly-typed-forms-*.tgz
