@@ -24,12 +24,12 @@ barFormArray = fb.array<Bar>([[{prop: ''}, [Validators.required, Validators.minL
 // FormGroup
 const heroFormGroup: FormGroup<Hero> = fb.group<Hero>({
   name: '',
-  secretLairs: fb.array<Address[]>([]),
+  secretLairs: fb.array<Address>([new Address(), {name: 'foo'}]),
   power: '',
   sidekick: ''
 });
 const namecontrol: AbstractControl<string> | null = heroFormGroup.get('name');
-const lairs: AbstractControl<Address[]> |null = heroFormGroup.get('secretLairs');
+const lairs: AbstractControl<Address[]> | null = heroFormGroup.get('secretLairs');
 
 let barFormGroup: FormGroup<Bar>;
 barFormGroup= fb.group<Bar>([{prop: ''}]);

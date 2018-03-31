@@ -5,14 +5,15 @@ export interface Hero {
   secretLairs: Address[];
 }
 
-export interface Address {
-  name: string;
+export class Address {
+  name: string = '';
 }
 
 export interface Foo {
-  field: Bar
+  field: Bar,
+  array: Bar[]
 }
 
-export interface Bar {
-  prop: string
+export class Bar {
+  prop: string = "";
 }

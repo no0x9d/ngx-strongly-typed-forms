@@ -32,6 +32,10 @@ This change is not backwards compatible with Angulars AbstractControl. All occur
 This project does not modify any angular classes but provides new strongly typed definitions for Angulars own forms.
 For convenience it reexports this classes directly from angular
 
+### Hints
+
+* `FormArray<T>` extends `AbstractControl<T[]>`. So if you have a `FormArray<string>` you can assign it to an `AbstractControl<string[]>`. This is important, because for instance `FormArray.get` returns a single instance of type `T` but `FormArray.value` returns `T[]`.
+
 ## Alternatives
 
 * Angulars own effort to create typed forms (https://github.com/angular/angular/pull/20040).
