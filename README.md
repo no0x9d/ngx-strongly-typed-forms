@@ -34,7 +34,8 @@ For convenience it reexports this classes directly from angular
 
 ### Hints
 
-* `FormArray<T>` extends `AbstractControl<T[]>`. So if you have a `FormArray<string>` you can assign it to an `AbstractControl<string[]>`. This is important, because for instance `FormArray.get` returns a single instance of type `T` but `FormArray.value` returns `T[]`.
+* `FormArray<T>` extends `AbstractControl<T[]>`. So if you have a `FormArray<string>` you can assign it to an `AbstractControl<string[]>`. This is necessary, because for instance `FormArray.get` returns a single instance of type `T` but `FormArray.value` returns `T[]`.
+It's also important when working with FormArrays as part of complex FormGroups. The generic type of the FormArray must always be the same as the generic of the Array in the model.
 
 ## Alternatives
 
