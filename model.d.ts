@@ -8,7 +8,7 @@ export type StateAndValidators<T> = [FormState<T>] |
   [FormState<T>, ValidatorFn | ValidatorFn[]] |
   [FormState<T>, ValidatorFn | ValidatorFn[] | null, AsyncValidatorFn | AsyncValidatorFn[] | null]
 
-export type ControlConfig<T> = FormState<T> | StateAndValidators<T> | AbstractControl<T> | FormArray<T>; // TODO check why AbstractControl<T> is not sufficient
+export type ControlConfig<T> = FormState<T> | StateAndValidators<T> | AbstractControl<T>;
 export type ControlsConfig<T> = ControlConfig<T> | {[P in keyof T]: ControlConfig<T[P]>};
 
 export declare abstract class AbstractControl<T> {
