@@ -19,3 +19,6 @@ const barArray: AbstractControl<Bar[]> | null = fooFormGroup.get('array');
 const heroFormGroup: FormGroup<Hero> = {} as FormGroup<Hero>;
 const namecontrol: AbstractControl<string> | null = heroFormGroup.get('name');
 const lairsControl: AbstractControl<Address[]> | null = heroFormGroup.get('secretLairs');
+
+// partial Reset
+fooFormGroup.reset({field: new Bar()});

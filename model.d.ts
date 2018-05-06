@@ -187,7 +187,7 @@ export declare class FormGroup<T> extends AbstractControl<T> {
     emitEvent?: boolean;
   }): void;
 
-  reset(value?: T, options?: {
+  reset(value?: Partial<T>, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void;
