@@ -1,18 +1,29 @@
-import {AsyncValidatorFn, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {AsyncValidatorFn as NgAsyncValidatorFn, ValidationErrors, ValidatorFn as NgValidatorFN} from '@angular/forms';
 import {AbstractControlOptions, FormHooks} from '@angular/forms/src/model';
 import {Observable} from 'rxjs/Observable';
+
+export type ValidatorFn<T> = NgValidatorFN | TypedValidatorFn<T>
+export type AsyncValidatorFn<T> = NgAsyncValidatorFn | TypedAsyncValidatorFn<T>
 
 export type Controls<T> = {[P in keyof T]: AbstractControl<T[P]>};
 export type FormState<T> = T | { value: T, disabled: boolean };
 export type StateAndValidators<T> = [FormState<T>] |
-  [FormState<T>, ValidatorFn | ValidatorFn[]] |
-  [FormState<T>, ValidatorFn | ValidatorFn[] | null, AsyncValidatorFn | AsyncValidatorFn[] | null]
+  [FormState<T>, ValidatorFn<T> | ValidatorFn<T>[]] |
+  [FormState<T>, ValidatorFn<T> | ValidatorFn<T>[] | null, AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null]
 
 export type ControlConfig<T> = FormState<T> | StateAndValidators<T> | AbstractControl<T>;
 export type ControlsConfig<T> = ControlConfig<T> | {[P in keyof T]: ControlConfig<T[P]>};
 
+export interface TypedValidatorFn<T> {
+  (c: AbstractControl<T>): ValidationErrors | null;
+}
+
+export interface TypedAsyncValidatorFn<T> {
+  (c: AbstractControl<T>): Promise<ValidationErrors | null> | Observable<ValidationErrors | null>;
+}
+
 export declare abstract class AbstractControl<T> {
-  constructor(validator: ValidatorFn | null, asyncValidator: AsyncValidatorFn | null);
+  constructor(validator: ValidatorFn<T> | null, asyncValidator: AsyncValidatorFn<T> | null);
 
   readonly parent: FormGroup<any> | FormArray<any>;
 
@@ -34,12 +45,12 @@ export declare abstract class AbstractControl<T> {
   readonly updateOn: FormHooks;
   readonly root: AbstractControl<T>;
 
-  validator: ValidatorFn | null;
-  asyncValidator: AsyncValidatorFn | null;
+  validator: ValidatorFn<T> | null;
+  asyncValidator: AsyncValidatorFn<T> | null;
 
-  setValidators(newValidator: ValidatorFn | ValidatorFn[] | null): void;
+  setValidators(newValidator: ValidatorFn<T> | ValidatorFn<T>[] | null): void;
 
-  setAsyncValidators(newValidator: AsyncValidatorFn | AsyncValidatorFn[] | null): void;
+  setAsyncValidators(newValidator: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): void;
 
   clearValidators(): void;
 
@@ -117,8 +128,8 @@ export declare abstract class AbstractControl<T> {
 export declare class FormArray<T> extends AbstractControl<T[]> {
 
   constructor(controls: AbstractControl<T>[],
-    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
+    validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions | null,
+    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null);
 
   controls: AbstractControl<T>[];
 
@@ -162,8 +173,8 @@ export declare class FormGroup<T> extends AbstractControl<T> {
   controls: Controls<T>;
 
   constructor(controls: Controls<T>,
-    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
+    validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions | null,
+    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null);
 
   registerControl(name: string, control: AbstractControl<any>): AbstractControl<any>;
 
@@ -197,8 +208,8 @@ export declare class FormGroup<T> extends AbstractControl<T> {
 
 export declare class FormControl<T> extends AbstractControl<T> {
   constructor(formState?: FormState<T>,
-    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
+    validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions | null,
+    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null);
 
   setValue(value: T, options?: {
     onlySelf?: boolean;
@@ -236,10 +247,10 @@ export declare class FormBuilder {
   group<T>(controlsConfig: ControlsConfig<T>, extra?: { [key: string]: any }): FormGroup<T>;
 
   control<T>(value: FormState<T>,
-    validator?: ValidatorFn | ValidatorFn[] | null,
-    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null): FormControl<T>;
+    validator?: ValidatorFn<T> | ValidatorFn<T>[] | null,
+    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): FormControl<T>;
 
   array<T>(controlsConfig: ControlConfig<T>[],
-    validator?: ValidatorFn | null,
-    asyncValidator?: AsyncValidatorFn | null): FormArray<T>;
+    validator?: ValidatorFn<T> | null,
+    asyncValidator?: AsyncValidatorFn<T> | null): FormArray<T>;
 }
