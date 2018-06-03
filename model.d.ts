@@ -1,5 +1,5 @@
 import {AsyncValidatorFn as NgAsyncValidatorFn, ValidationErrors, ValidatorFn as NgValidatorFN} from '@angular/forms';
-import {AbstractControlOptions, FormHooks} from '@angular/forms/src/model';
+import {FormHooks} from '@angular/forms/src/model';
 import {Observable} from 'rxjs/Observable';
 
 export type ValidatorFn<T> = NgValidatorFN | TypedValidatorFn<T>
@@ -13,6 +13,12 @@ export type StateAndValidators<T> = [FormState<T>] |
 
 export type ControlConfig<T> = FormState<T> | StateAndValidators<T> | AbstractControl<T>;
 export type ControlsConfig<T> = ControlConfig<T> | {[P in keyof T]: ControlConfig<T[P]>};
+
+export interface AbstractControlOptions<T> {
+  validators?: ValidatorFn<T> | ValidatorFn<T>[] | null;
+  asyncValidators?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null;
+  updateOn?: FormHooks;
+}
 
 export interface TypedValidatorFn<T> {
   (c: AbstractControl<T>): ValidationErrors | null;
@@ -128,7 +134,7 @@ export declare abstract class AbstractControl<T> {
 export declare class FormArray<T> extends AbstractControl<T[]> {
 
   constructor(controls: AbstractControl<T>[],
-    validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions | null,
+    validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions<T> | null,
     asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null);
 
   controls: AbstractControl<T>[];
@@ -173,7 +179,7 @@ export declare class FormGroup<T> extends AbstractControl<T> {
   controls: Controls<T>;
 
   constructor(controls: Controls<T>,
-    validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions | null,
+    validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions<T> | null,
     asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null);
 
   registerControl(name: string, control: AbstractControl<any>): AbstractControl<any>;
@@ -208,7 +214,7 @@ export declare class FormGroup<T> extends AbstractControl<T> {
 
 export declare class FormControl<T> extends AbstractControl<T> {
   constructor(formState?: FormState<T>,
-    validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions | null,
+    validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions<T> | null,
     asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null);
 
   setValue(value: T, options?: {
