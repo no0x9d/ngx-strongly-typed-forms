@@ -11,3 +11,7 @@ export const FormArray = NgFormArray;
 export const FormControl = NgFormControl;
 export const FormGroup = NgFormGroup;
 export const FormBuilder =  NgFormBuilder;
+
+export function toUntyped(control) {
+  return control;
+}
