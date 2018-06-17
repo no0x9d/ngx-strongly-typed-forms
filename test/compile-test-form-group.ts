@@ -1,4 +1,4 @@
-import {AbstractControl, FormArray, FormControl, FormGroup} from '../model';
+import {AbstractControl, FormArray, FormControl, FormGroup} from '../src/model';
 import {Address, Bar, Foo, Hero} from './interfaces';
 
 let fooFormGroup: FormGroup<Foo> = new FormGroup<Foo>({

@@ -2,8 +2,8 @@
   "name": "ngx-strongly-typed-forms",
   "version": "0.9.0",
   "description": "Strongly typed definitions for Anglulars @angular/forms",
-  "main": "model.js",
-  "types": "model.d.ts",
+  "main": "src/model.js",
+  "types": "src/model.d.ts",
   "scripts": {
     "test": "tsc"
   },

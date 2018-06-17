@@ -1,5 +1,5 @@
 import {Validators} from '@angular/forms'
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup} from '../model';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup} from '../src/model';
 import {Address, Bar, Foo, Hero} from './interfaces';
 
 const fb = new FormBuilder();

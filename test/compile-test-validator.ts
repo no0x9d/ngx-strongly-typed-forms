@@ -1,4 +1,4 @@
-import {AbstractControl, AsyncValidatorFn, FormControl, TypedAsyncValidatorFn} from '../model';
+import {AbstractControl, AsyncValidatorFn, FormControl, TypedAsyncValidatorFn} from '../src/model';
 import {AbstractControl as NgAbstractControl} from '@angular/forms';
 import {Hero} from './interfaces';
 

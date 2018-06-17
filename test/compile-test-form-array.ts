@@ -1,4 +1,4 @@
-import {AbstractControl, FormArray, FormControl} from '../model';
+import {AbstractControl, FormArray, FormControl} from '../src/model';
 import {Bar} from './interfaces';
 
 let barArray: FormArray<Bar> = new FormArray([new FormControl<Bar>({prop: ""}), new FormControl<Bar>(undefined)]);
