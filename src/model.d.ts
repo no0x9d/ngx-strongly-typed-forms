@@ -8,7 +8,7 @@ import {
   FormGroup as NgFormGroup
 } from '@angular/forms';
 import {FormHooks} from '@angular/forms/src/model';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
 export type ValidatorFn<T> = NgValidatorFN | TypedValidatorFn<T>
 export type AsyncValidatorFn<T> = NgAsyncValidatorFn | TypedAsyncValidatorFn<T>
