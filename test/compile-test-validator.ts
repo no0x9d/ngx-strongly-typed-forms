@@ -1,4 +1,4 @@
-import {AbstractControl, AsyncValidatorFn, FormControl, TypedAsyncValidatorFn} from '../model';
+import {AbstractControl, FormControl} from '../model';
 import {AbstractControl as NgAbstractControl} from '@angular/forms';
 import {Hero} from './interfaces';
 
@@ -14,13 +14,13 @@ new FormControl<number>(42, [(c: NgAbstractControl) => null]);
 new FormControl<number>(42, [(c: AbstractControl<number>) => null, (c: NgAbstractControl) => null]);
 
 // partial TypedValidatorFn
-new FormControl<Hero>(undefined, (c: AbstractControl<{ power: string }>) => null);
-new FormControl<Hero>(undefined, [(c: AbstractControl<{ power: string }>) => null,
-  (c: AbstractControl<{ sidekick: string }>) => null]);
+new FormControl<Hero>(undefined, (c: AbstractControl<Hero>) => null);
+new FormControl<Hero>(undefined, [(c: AbstractControl<Hero>) => null,
+  (c: AbstractControl<Hero>) => null]);
 
 // using AbstractControlOptions
-new FormControl<Hero>(undefined, {validators: (c: AbstractControl<{ power: string }>) => null});
-new FormControl<Hero>(undefined, {validators: [(c: AbstractControl<{ power: string }>) => null]});
+new FormControl<Hero>(undefined, {validators: (c: AbstractControl<Hero>) => null});
+new FormControl<Hero>(undefined, {validators: [(c: AbstractControl<Hero>) => null]});
 
 // TypedAsyncValidatorFn
 new FormControl<number>(42, null, (c: AbstractControl<number>) => Promise.resolve(null));
@@ -35,8 +35,8 @@ new FormControl<number>(42, null, [(c: AbstractControl<number>) => Promise.resol
   (c: NgAbstractControl) => Promise.resolve(null)]);
 
 // partial AsyncTypedValidatorFn
-new FormControl<Hero>(undefined, null, (c: AbstractControl<{ power: string }>) => Promise.resolve(null));
+new FormControl<Hero>(undefined, null, (c: AbstractControl<Hero>) => Promise.resolve(null));
 new FormControl<Hero>(undefined, null,
-  [(c: AbstractControl<{ power: string }>) => Promise.resolve(null),
-    (c: AbstractControl<{ sidekick: string }>) => Promise.resolve(null)]);
+  [(c: AbstractControl<Hero>) => Promise.resolve(null),
+    (c: AbstractControl<Hero>) => Promise.resolve(null)]);
 
