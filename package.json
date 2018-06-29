@@ -1,7 +1,7 @@
 {
   "name": "ngx-strongly-typed-forms",
-  "version": "0.9.0",
-  "description": "Strongly typed definitions for Anglulars @angular/forms",
+  "version": "0.10.0",
+  "description": "Strongly typed definitions for Angulars @angular/forms",
   "main": "model.js",
   "types": "model.d.ts",
   "scripts": {
@@ -19,10 +19,13 @@
     "type definition"
   ],
   "peerDependencies": {
-    "@angular/forms": "^5.2.9",
-    "rxjs": "^5.5.7"
+    "@angular/forms": ">=6.0.",
+    "rxjs": ">=6.0.0"
   },
   "devDependencies": {
+    "@angular/core": "^6.0.5",
+    "@angular/forms": "^6.0.5",
+    "rxjs": "^6.2.1",
     "typescript": "^2.7.2"
   },
   "repository": {
