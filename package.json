@@ -5,7 +5,7 @@
   "main": "src/model.js",
   "types": "src/model.d.ts",
   "scripts": {
-    "test": "tsc"
+    "test": "tsc -p ./test/tsconfig-test.json --noEmit"
   },
   "author": {
     "name": "Christoph Hoffmann",
@@ -23,7 +23,13 @@
     "rxjs": "^5.x || ^6.x"
   },
   "devDependencies": {
-    "typescript": "^2.7.2"
+    "@angular/common": "^5.2.11",
+    "@angular/core": "^5.2.9",
+    "@angular/forms": "^5.2.9",
+    "@angular/platform-browser": "^5.2.11",
+    "rxjs": "^5.5.7",
+    "typescript": "^2.7.2",
+    "zone.js": "^0.8.26"
   },
   "repository": {
     "type": "git",
