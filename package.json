@@ -1,7 +1,7 @@
 {
   "name": "ngx-strongly-typed-forms",
   "version": "0.10.0",
-  "description": "Strongly typed definitions for Anglulars @angular/forms",
+  "description": "Strongly typed definitions for Angulars @angular/forms",
   "main": "src/model.js",
   "types": "src/model.d.ts",
   "scripts": {
