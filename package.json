@@ -5,6 +5,8 @@
   "main": "src/model.js",
   "types": "src/model.d.ts",
   "scripts": {
+    "build": "gulp build",
+    "build:watch": "gulp",
     "test": "tsc -p ./test/tsconfig-test.json --noEmit"
   },
   "author": {
@@ -29,6 +31,12 @@
     "@angular/core": "^6.0.0",
     "@angular/forms": "^6.0.0",
     "@angular/platform-browser": "^6.0.0",
+    "fs-extra": "^5.0.0",
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-rollup": "^2.15.0",
+    "rollup": "^0.49.3",
+    "run-sequence": "^1.2.2",
     "rxjs": "^6.0.0",
     "typescript": "^2.7.2",
     "zone.js": "^0.8.26"
