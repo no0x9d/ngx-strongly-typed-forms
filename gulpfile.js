@@ -5,7 +5,9 @@ var gulp = require('gulp'),
   rollup = require('gulp-rollup'),
   rename = require('gulp-rename'),
   fs = require('fs-extra'),
-  runSequence = require('run-sequence');
+  runSequence = require('run-sequence'),
+  bump = require('gulp-bump');
+const version = require('./package').version;
 
 const rootFolder = path.join(__dirname);
 const srcFolder = path.join(rootFolder, 'src');
@@ -156,6 +158,7 @@ gulp.task('copy:build', function () {
  */
 gulp.task('copy:manifest', function () {
   return gulp.src([`${srcFolder}/package.json`])
+    .pipe(bump({version: version}))
     .pipe(gulp.dest(distFolder));
 });
 
