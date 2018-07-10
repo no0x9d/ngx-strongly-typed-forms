@@ -1,13 +1,10 @@
 {
   "name": "ngx-strongly-typed-forms",
-  "version": "0.10.0",
+  "version": "0.0.0",
   "description": "Strongly typed definitions for Angulars @angular/forms",
-  "typings": "public_api.ts",
+  "typings": "public_api.d.ts",
   "main": "ngx-strongly-typed-forms.umd.js",
   "module": "public_api.js",
-  "scripts": {
-    "test": "tsc -p ./test/tsconfig-test.json --noEmit"
-  },
   "author": {
     "name": "Christoph Hoffmann",
     "email": "me@nestedloop.de"
