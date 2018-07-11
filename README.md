@@ -11,12 +11,10 @@ import {FormArray, FormControl, FormGroup} from 'ngx-strongly-typed-forms';
 
 If you want to use the FormBuilder you have to provide it from your app module
 ```typescript
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder } from 'ngx-strongly-typed-forms';
+import { FormBuilder, NgxStronglyTypedFormsModule } from 'ngx-strongly-typed-forms';
 
 @NgModule({
-  imports: [ ReactiveFormsModule ]
-  providers: [ FormBuilder ]
+  imports: [ NgxStronglyTypedFormsModule ]
 })
 export class AppModule {
 }
@@ -40,7 +38,7 @@ every property, which does not work with nestet FormArrays or FormGroups.
 form = fb.group<MyModel>({
   foo: null,
   bar: ["bar", Validators.required],
-  baz: fb.array([])
+  baz: fb.array<Baz>([])
 })
 ```
 
