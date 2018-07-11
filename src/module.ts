@@ -1,12 +1,8 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {FormBuilder} from './model';
 
-@NgModule()
+@NgModule({
+  providers: [FormBuilder]
+})
 export class NgxStronglyTypedFormsModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: NgxStronglyTypedFormsModule,
-      providers: [FormBuilder]
-    }
-  }
 }
