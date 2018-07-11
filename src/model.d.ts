@@ -1,12 +1,4 @@
-import {
-  AsyncValidatorFn as NgAsyncValidatorFn,
-  ValidationErrors,
-  ValidatorFn as NgValidatorFN,
-  AbstractControl as NgAbstractControl,
-  FormControl as NgFormControl,
-  FormArray as NgFormArray,
-  FormGroup as NgFormGroup
-} from '@angular/forms';
+import {AsyncValidatorFn as NgAsyncValidatorFn, ValidationErrors, ValidatorFn as NgValidatorFN} from '@angular/forms';
 import {FormHooks} from '@angular/forms/src/model';
 import {Observable} from 'rxjs';
 
@@ -268,8 +260,3 @@ export declare class FormBuilder {
     validator?: ValidatorFn<T> | null,
     asyncValidator?: AsyncValidatorFn<T> | null): FormArray<T>;
 }
-
-export function toUntyped<T>(control: FormControl<T>): NgFormControl;
-export function toUntyped<T>(control: FormGroup<T>): NgFormGroup;
-export function toUntyped<T>(control: FormArray<T>): NgFormArray;
-export function toUntyped<T>(control: AbstractControl<T>): NgAbstractControl
