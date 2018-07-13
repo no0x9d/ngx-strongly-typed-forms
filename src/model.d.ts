@@ -28,6 +28,15 @@ export interface TypedAsyncValidatorFn<T> {
   (c: AbstractControl<T>): Promise<ValidationErrors | null> | Observable<ValidationErrors | null>;
 }
 
+interface Validator<T> {
+  validate(c: AbstractControl<T>): ValidationErrors | null;
+  registerOnValidatorChange?(fn: () => void): void;
+}
+
+export interface AsyncValidator<T> extends Validator<T> {
+  validate(c: AbstractControl<T>): Promise<ValidationErrors | null> | Observable<ValidationErrors | null>;
+}
+
 export declare abstract class AbstractControl<T> {
   constructor(validator: ValidatorFn<T> | null, asyncValidator: AsyncValidatorFn<T> | null);
 

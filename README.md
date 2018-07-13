@@ -11,10 +11,11 @@ import {FormArray, FormControl, FormGroup} from 'ngx-strongly-typed-forms';
 
 If you want to use the FormBuilder you have to provide it from your app module
 ```typescript
-import { FormBuilder, NgxStronglyTypedFormsModule } from 'ngx-strongly-typed-forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgxStronglyTypedFormsModule } from 'ngx-strongly-typed-forms';
 
 @NgModule({
-  imports: [ NgxStronglyTypedFormsModule ]
+  imports: [ ReactiveFormsModule, NgxStronglyTypedFormsModule ]
 })
 export class AppModule {
 }
