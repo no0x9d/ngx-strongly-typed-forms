@@ -258,8 +258,8 @@ export declare class FormControl<T> extends AbstractControl<T> {
 }
 
 export interface FormBuilderFormGroubOptions<T> {
-  validators?: ValidatorFn<T> | ValidatorFn<T>[] | null;
-  asyncValidators?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null;
+  validator?: ValidatorFn<T> | ValidatorFn<T>[] | null;
+  asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null;
 }
 
 export declare class FormBuilder {
