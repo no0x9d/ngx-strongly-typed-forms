@@ -257,9 +257,14 @@ export declare class FormControl<T> extends AbstractControl<T> {
   registerOnDisabledChange(fn: (isDisabled: boolean) => void): void;
 }
 
+export interface FormBuilderFormGroubOptions<T> {
+  validators?: ValidatorFn<T> | ValidatorFn<T>[] | null;
+  asyncValidators?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null;
+}
+
 export declare class FormBuilder {
 
-  group<T>(controlsConfig: ControlsConfig<T>, extra?: { [key: string]: any }): FormGroup<T>;
+  group<T>(controlsConfig: ControlsConfig<T>, extra?: FormBuilderFormGroubOptions<T>): FormGroup<T>;
 
   control<T>(value: FormState<T>,
     validator?: ValidatorFn<T> | ValidatorFn<T>[] | null,
