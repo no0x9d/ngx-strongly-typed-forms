@@ -5,14 +5,14 @@ import {Observable} from 'rxjs';
 export type ValidatorFn<T> = NgValidatorFN | TypedValidatorFn<T>
 export type AsyncValidatorFn<T> = NgAsyncValidatorFn | TypedAsyncValidatorFn<T>
 
-export type Controls<T> = {[P in keyof T]: AbstractControl<T[P]>};
+export type Controls<T> = { [P in keyof T]: AbstractControl<T[P]> };
 export type FormState<T> = T | { value: T, disabled: boolean };
 export type StateAndValidators<T> = [FormState<T>] |
   [FormState<T>, ValidatorFn<T> | ValidatorFn<T>[]] |
   [FormState<T>, ValidatorFn<T> | ValidatorFn<T>[] | null, AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null]
 
 export type ControlConfig<T> = FormState<T> | StateAndValidators<T> | AbstractControl<T>;
-export type ControlsConfig<T> = ControlConfig<T> | {[P in keyof T]: ControlConfig<T[P]>};
+export type ControlsConfig<T> = ControlConfig<T> | { [P in keyof T]: ControlConfig<T[P]> };
 
 export interface AbstractControlOptions<T> {
   validators?: ValidatorFn<T> | ValidatorFn<T>[] | null;
@@ -28,8 +28,9 @@ export interface TypedAsyncValidatorFn<T> {
   (c: AbstractControl<T>): Promise<ValidationErrors | null> | Observable<ValidationErrors | null>;
 }
 
-interface Validator<T> {
+export interface Validator<T> {
   validate(c: AbstractControl<T>): ValidationErrors | null;
+
   registerOnValidatorChange?(fn: () => void): void;
 }
 
@@ -38,7 +39,6 @@ export interface AsyncValidator<T> extends Validator<T> {
 }
 
 export abstract class AbstractControl<T> {
-  constructor(validator: ValidatorFn<T> | null, asyncValidator: AsyncValidatorFn<T> | null);
 
   readonly parent: FormGroup<any> | FormArray<any>;
 
@@ -63,47 +63,57 @@ export abstract class AbstractControl<T> {
   validator: ValidatorFn<T> | null;
   asyncValidator: AsyncValidatorFn<T> | null;
 
-  setValidators(newValidator: ValidatorFn<T> | ValidatorFn<T>[] | null): void;
+  setValidators(newValidator: ValidatorFn<T> | ValidatorFn<T>[] | null): void {
+  };
 
-  setAsyncValidators(newValidator: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): void;
+  setAsyncValidators(newValidator: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): void {
+  };
 
-  clearValidators(): void;
+  clearValidators(): void {
+  };
 
-  clearAsyncValidators(): void;
+  clearAsyncValidators(): void {
+  };
 
   markAsTouched(opts?: {
     onlySelf?: boolean;
-  }): void;
+  }): void {
+  };
 
   markAsUntouched(opts?: {
     onlySelf?: boolean;
-  }): void;
+  }): void {
+  };
 
   markAsDirty(opts?: {
     onlySelf?: boolean;
-  }): void;
+  }): void {
+  };
 
   markAsPristine(opts?: {
     onlySelf?: boolean;
-  }): void;
+  }): void {
+  };
 
   markAsPending(opts?: {
     onlySelf?: boolean;
-  }): void;
+  }): void {
+  };
 
   disable(opts?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
-  }): void;
+  }): void {
+  };
 
   enable(opts?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
-  }): void;
+  }): void {
+  };
 
-  private _updateAncestors(onlySelf);
-
-  setParent(parent: FormGroup<any> | FormArray<any>): void;
+  setParent(parent: FormGroup<any> | FormArray<any>): void {
+  };
 
   abstract setValue(value: T, options?: Object): void;
 
@@ -114,74 +124,88 @@ export abstract class AbstractControl<T> {
   updateValueAndValidity(opts?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
-  }): void;
-
-  private _setInitialStatus();
-
-  private _runValidator();
-
-  private _runAsyncValidator(emitEvent?);
-
-  private _cancelExistingSubscription();
+  }): void {
+  };
 
   setErrors(errors: ValidationErrors | null, opts?: {
     emitEvent?: boolean;
-  }): void;
+  }): void {
+  };
 
-  get<K extends keyof T>(path: K): AbstractControl<T[K]> | null;
-  get<K1 extends keyof T>(path: [K1]): AbstractControl<T[K1]> | null;
-  get<K1 extends keyof T, K2 extends keyof T[K1]>(path: [K1, K2]): AbstractControl<T[K1][K2]> | null;
-  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3]> | null;
-  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4]> | null;
-  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4][K5]> | null;
+  abstract get<K extends keyof T>(path: K): AbstractControl<T[K]> | null;
+  abstract get<K1 extends keyof T>(path: [K1]): AbstractControl<T[K1]> | null;
+  abstract get<K1 extends keyof T, K2 extends keyof T[K1]>(path: [K1, K2]): AbstractControl<T[K1][K2]> | null;
+  abstract get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3]> | null;
+  abstract get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4]> | null;
+  abstract get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4][K5]> | null;
 
-  getError(errorCode: string, path?: string[]): any;
+  getError(errorCode: string, path?: string[]): any {
+    return
+  };
 
-  hasError(errorCode: string, path?: string[]): boolean;
+  hasError(errorCode: string, path?: string[]): boolean {
+    return true
+  };
 }
 
 export class FormArray<T> extends AbstractControl<T[]> {
 
   constructor(controls: AbstractControl<T>[],
     validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions<T> | null,
-    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null);
+    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null) {
+    super()
+  };
 
   controls: AbstractControl<T>[];
 
   readonly length: number;
 
-  at(index: number): AbstractControl<T>;
+  at(index: number): AbstractControl<T> {
+    return this.controls[index]
+  };
 
   get<K1 extends keyof T>(path: [K1]): null;
   get<K1 extends keyof T, K2 extends keyof T[K1]>(path: [K1, K2]): null;
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): null;
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): null;
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): null;
+  get() {
+    return
+  }
 
-  push(control: AbstractControl<T>): void;
+  push(control: AbstractControl<T>): void {
+  };
 
-  insert(index: number, control: AbstractControl<T>): void;
+  insert(index: number, control: AbstractControl<T>): void {
+  };
 
-  removeAt(index: number): void;
+  removeAt(index: number): void {
+  };
 
-  setControl(index: number, control: AbstractControl<T>): void;
+  setControl(index: number, control: AbstractControl<T>): void {
+  };
 
   setValue(value: T[], options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
-  }): void;
+  }): void {
+  };
 
   patchValue(value: T[], options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
-  }): void;
+  }): void {
+  };
 
   reset(value?: T[], options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
-  }): void;
+  }): void {
+  };
 
-  getRawValue(): T[];
+  getRawValue(): T[] {
+    return
+  };
 }
 
 export class FormGroup<T> extends AbstractControl<T> {
@@ -189,61 +213,89 @@ export class FormGroup<T> extends AbstractControl<T> {
 
   constructor(controls: Controls<T>,
     validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions<T> | null,
-    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null);
+    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null) {
+    super()
+  };
 
-  registerControl(name: string, control: AbstractControl<any>): AbstractControl<any>;
+  registerControl(name: string, control: AbstractControl<any>): AbstractControl<any> {
+    return
+  };
 
-  addControl(name: string, control: AbstractControl<any>): void;
+  addControl(name: string, control: AbstractControl<any>): void {
+  };
 
-  removeControl<K extends keyof T>(name: K): void;
+  removeControl<K extends keyof T>(name: K): void {
+  };
 
-  setControl<K extends keyof T>(name: K, control: AbstractControl<T[K]>): void;
+  setControl<K extends keyof T>(name: K, control: AbstractControl<T[K]>): void {
+  };
 
-  contains(controlName: string): boolean;
+  contains(controlName: string): boolean {
+    return
+  };
 
   setValue(value: {
     [key: string]: any;
   }, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
-  }): void;
+  }): void {
+  };
 
   patchValue(value: Partial<T>, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
-  }): void;
+  }): void {
+  };
 
   reset(value?: Partial<T>, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
-  }): void;
+  }): void {
+  };
 
-  getRawValue(): T;
+  getRawValue(): T {
+    return
+  };
+
+  get<K extends keyof T>(path: K): AbstractControl<T[K]> | null;
+  get<K1 extends keyof T>(path: [K1]): AbstractControl<T[K1]> | null;
+  get<K1 extends keyof T, K2 extends keyof T[K1]>(path: [K1, K2]): AbstractControl<T[K1][K2]> | null;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3]> | null;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4]> | null;
+  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4][K5]> | null;
+  get(path): any {
+  }
 }
 
 export class FormControl<T> extends AbstractControl<T> {
   constructor(formState?: FormState<T>,
     validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions<T> | null,
-    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null);
+    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null) {
+    super()
+  };
 
   setValue(value: T, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
     emitModelToViewChange?: boolean;
     emitViewToModelChange?: boolean;
-  }): void;
+  }): void {
+  };
 
   patchValue(value: Partial<T>, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
     emitModelToViewChange?: boolean;
     emitViewToModelChange?: boolean;
-  }): void;
+  }): void {
+  };
 
   reset(formState?: T, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
-  }): void;
+  }): void {
+  };
 
   get<K extends keyof T>(path: K): null;
   get<K1 extends keyof T>(path: [K1]): null;
@@ -251,10 +303,15 @@ export class FormControl<T> extends AbstractControl<T> {
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): null;
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): null;
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): null;
+  get() {
+    return
+  };
 
-  registerOnChange(fn: Function): void;
+  registerOnChange(fn: Function): void {
+  };
 
-  registerOnDisabledChange(fn: (isDisabled: boolean) => void): void;
+  registerOnDisabledChange(fn: (isDisabled: boolean) => void): void {
+  };
 }
 
 export interface FormBuilderFormGroubOptions<T> {
@@ -264,13 +321,19 @@ export interface FormBuilderFormGroubOptions<T> {
 
 export class FormBuilder {
 
-  group<T>(controlsConfig: ControlsConfig<T>, extra?: FormBuilderFormGroubOptions<T>): FormGroup<T>;
+  group<T>(controlsConfig: ControlsConfig<T>, extra?: FormBuilderFormGroubOptions<T>): FormGroup<T> {
+    return
+  };
 
   control<T>(value: FormState<T>,
     validator?: ValidatorFn<T> | ValidatorFn<T>[] | null,
-    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): FormControl<T>;
+    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): FormControl<T> {
+    return
+  };
 
   array<T>(controlsConfig: ControlConfig<T>[],
     validator?: ValidatorFn<T> | null,
-    asyncValidator?: AsyncValidatorFn<T> | null): FormArray<T>;
+    asyncValidator?: AsyncValidatorFn<T> | null): FormArray<T> {
+    return
+  };
 }

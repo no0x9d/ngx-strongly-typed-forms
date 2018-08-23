@@ -47,11 +47,12 @@ gulp.task('ngc', function () {
 });
 
 /**
- * 4. Clone model.d.ts and model.js manual in build folder, because they are not
- *    picked up by the typescript compiler
+ * 4. Copy model.js manual in build folder, because the model.ts file comtains
+ * only dummy implementations to confirm to the typescript compiler.
+ * The real implementations come from the Angular project
  */
 gulp.task('copy:model', function () {
-  return gulp.src([`${srcFolder}/model.js`, `${srcFolder}/model.d.ts`])
+  return gulp.src([`${srcFolder}/model.js`])
     .pipe(gulp.dest(buildFolder));
 });
 
