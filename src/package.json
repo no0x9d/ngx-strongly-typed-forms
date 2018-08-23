@@ -2,7 +2,7 @@
   "name": "ngx-strongly-typed-forms",
   "version": "0.0.0",
   "description": "Strongly typed definitions for Angulars @angular/forms",
-  "typings": "public_api.d.ts",
+  "typings": "ngx-strongly-typed-forms.d.ts",
   "main": "ngx-strongly-typed-forms.umd.js",
   "module": "public_api.js",
   "author": {
