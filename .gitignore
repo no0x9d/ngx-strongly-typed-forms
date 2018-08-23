@@ -1,6 +1,13 @@
+#IDE
 .idea/
 *.iml
-node_modules/
 test/out/
+
+#dependencies
+node_modules/
+
+#Build directories and files
 ngx-strongly-typed-forms-*.tgz
 dist/
+build/
+.tmp/
