@@ -37,7 +37,7 @@ export interface AsyncValidator<T> extends Validator<T> {
   validate(c: AbstractControl<T>): Promise<ValidationErrors | null> | Observable<ValidationErrors | null>;
 }
 
-export declare abstract class AbstractControl<T> {
+export abstract class AbstractControl<T> {
   constructor(validator: ValidatorFn<T> | null, asyncValidator: AsyncValidatorFn<T> | null);
 
   readonly parent: FormGroup<any> | FormArray<any>;
@@ -140,7 +140,7 @@ export declare abstract class AbstractControl<T> {
   hasError(errorCode: string, path?: string[]): boolean;
 }
 
-export declare class FormArray<T> extends AbstractControl<T[]> {
+export class FormArray<T> extends AbstractControl<T[]> {
 
   constructor(controls: AbstractControl<T>[],
     validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions<T> | null,
@@ -184,7 +184,7 @@ export declare class FormArray<T> extends AbstractControl<T[]> {
   getRawValue(): T[];
 }
 
-export declare class FormGroup<T> extends AbstractControl<T> {
+export class FormGroup<T> extends AbstractControl<T> {
   controls: Controls<T>;
 
   constructor(controls: Controls<T>,
@@ -221,7 +221,7 @@ export declare class FormGroup<T> extends AbstractControl<T> {
   getRawValue(): T;
 }
 
-export declare class FormControl<T> extends AbstractControl<T> {
+export class FormControl<T> extends AbstractControl<T> {
   constructor(formState?: FormState<T>,
     validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions<T> | null,
     asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null);
@@ -262,7 +262,7 @@ export interface FormBuilderFormGroubOptions<T> {
   asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null;
 }
 
-export declare class FormBuilder {
+export class FormBuilder {
 
   group<T>(controlsConfig: ControlsConfig<T>, extra?: FormBuilderFormGroubOptions<T>): FormGroup<T>;
 
