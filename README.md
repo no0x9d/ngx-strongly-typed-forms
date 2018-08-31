@@ -12,11 +12,10 @@ import {FormArray, FormControl, FormGroup} from 'ngx-strongly-typed-forms';
 If you want to use the FormBuilder you have to provide it from your app module
 ```typescript
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder } from 'ngx-strongly-typed-forms';
+import { NgxStronglyTypedFormsModule } from 'ngx-strongly-typed-forms';
 
 @NgModule({
-  imports: [ ReactiveFormsModule ]
-  providers: [ FormBuilder ]
+  imports: [ ReactiveFormsModule, NgxStronglyTypedFormsModule ]
 })
 export class AppModule {
 }
@@ -40,7 +39,7 @@ every property, which does not work with nestet FormArrays or FormGroups.
 form = fb.group<MyModel>({
   foo: null,
   bar: ["bar", Validators.required],
-  baz: fb.array([])
+  baz: fb.array<Baz>([])
 })
 ```
 
@@ -61,6 +60,18 @@ If you find something not working as expected then there might be a problem in m
 
 ## Limitations
 
+* AbstractControl#value is not correctly typed for typescript strict mode. For FormGroup it returns only values of FormControls that are not disabled. So the correct type should be a DeepPartial<T>.
+  Typescript 2.8 supports conditional types to build this structure like
+  ```
+  type DeepPartial<T> = {
+    [P in keyof T]?: T[P] extends Array<infer U>
+      ? Array<DeepPartial<U>>
+      : T[P] extends ReadonlyArray<infer U>
+        ? ReadonlyArray<DeepPartial<U>>
+        : DeepPartial<T[P]>
+  };
+  ```
+  When Angular uses Typescript 2.8 the return value should be changed.
 * The get method on AbstractControl `AbstractControl#get(path: string|number [])` is impossible to statically type, because every subclass has a different implementation.
   FormControll always return null, FormGroup only works with string keys and FormArray only with a numerical index.
   Because I never needed a deeply nested access with both number and string, only string key up to a depth of 5 levels are currently supported. If this is not sufficient for you, please open an issue and explain your situation.

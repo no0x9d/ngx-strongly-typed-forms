@@ -1,11 +1,13 @@
 {
   "name": "ngx-strongly-typed-forms",
-  "version": "0.10.0",
-  "description": "Strongly typed definitions for Anglulars @angular/forms",
+  "version": "1.0.0-rc5",
+  "description": "Strongly typed definitions for Angulars @angular/forms",
   "main": "src/model.js",
   "types": "src/model.d.ts",
   "scripts": {
-    "test": "tsc"
+    "build": "gulp build",
+    "build:watch": "gulp",
+    "test": "tsc -p ./test/tsconfig-test.json --noEmit"
   },
   "author": {
     "name": "Christoph Hoffmann",
@@ -23,7 +25,22 @@
     "rxjs": "^5.x || ^6.x"
   },
   "devDependencies": {
-    "typescript": "^2.7.2"
+    "@angular/common": "^6.0.0",
+    "@angular/compiler": "^6.0.0",
+    "@angular/compiler-cli": "^6.0.0",
+    "@angular/core": "^6.0.0",
+    "@angular/forms": "^6.0.0",
+    "@angular/platform-browser": "^6.0.0",
+    "fs-extra": "^5.0.0",
+    "gulp": "^3.9.1",
+    "gulp-bump": "^3.1.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-rollup": "^2.15.0",
+    "rollup": "^0.49.3",
+    "run-sequence": "^1.2.2",
+    "rxjs": "^6.0.0",
+    "typescript": "^2.7.2",
+    "zone.js": "^0.8.26"
   },
   "repository": {
     "type": "git",
@@ -32,5 +49,6 @@
   "bugs": {
     "url": "https://github.com/no0x9d/ngx-strongly-typed-forms/issues"
   },
-  "homepage": "https://github.com/no0x9d/ngx-strongly-typed-forms"
+  "homepage": "https://github.com/no0x9d/ngx-strongly-typed-forms",
+  "private": true
 }
