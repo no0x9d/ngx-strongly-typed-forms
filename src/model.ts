@@ -1285,14 +1285,14 @@ export class FormControl<T> extends AbstractControl<T> {
   };
 }
 
-export interface FormBuilderFormGroubOptions<T> {
+export interface FormBuilderFormGroupOptions<T> {
   validator?: ValidatorFn<T> | ValidatorFn<T>[] | null;
   asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null;
 }
 
 export class FormBuilder {
 
-  group<T>(controlsConfig: ControlsConfig<T>, extra?: FormBuilderFormGroubOptions<T>): FormGroup<T> {
+  group<T>(controlsConfig: ControlsConfig<T>, extra?: FormBuilderFormGroupOptions<T>): FormGroup<T> {
     return
   };
 
