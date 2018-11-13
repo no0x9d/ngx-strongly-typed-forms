@@ -21,7 +21,7 @@
     "type definition"
   ],
   "peerDependencies": {
-    "@angular/forms": "^5.x || ^6.x",
+    "@angular/forms": "^5.x || ^6.x || ^7.x",
     "rxjs": "^5.x || ^6.x"
   },
   "devDependencies": {
