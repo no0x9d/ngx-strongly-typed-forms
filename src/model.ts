@@ -1292,7 +1292,7 @@ export interface FormBuilderFormGroupOptions<T> {
 
 export class FormBuilder {
 
-  group<T>(controlsConfig: ControlsConfig<T>, extra?: FormBuilderFormGroupOptions<T>): FormGroup<T> {
+  group<T>(controlsConfig: ControlsConfig<T>, extra?: FormBuilderFormGroupOptions<T> | AbstractControlOptions<T>): FormGroup<T> {
     return
   };
 
