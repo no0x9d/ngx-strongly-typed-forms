@@ -3,6 +3,9 @@
 ```bash
 npm install ngx-strongly-typed-forms
 ```
+**Attention:** Since version 7.2 this project does no longer follow semver version numbers. 
+The major and minor version represents the compatible Angular version and patch versions are bugfixes in this library.   
+
 
 Now you can import generic FormControl, FormGroup and FormArray and use them instead of the classes from `@angular/forms`
 ```typescript
