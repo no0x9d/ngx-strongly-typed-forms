@@ -1303,8 +1303,8 @@ export class FormBuilder {
   };
 
   array<T>(controlsConfig: ControlConfig<T>[],
-    validator?: ValidatorFn<T> | null,
-    asyncValidator?: AsyncValidatorFn<T> | null): FormArray<T> {
+    validator?: ValidatorFn<T> | ValidatorFn<T>[] | null,
+    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): FormArray<T> {
     return
   };
 }
