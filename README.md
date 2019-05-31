@@ -27,17 +27,17 @@ export class AppModule {
 
 All usages of `AbstractControl` and its subclasses now supports generic types.
 
-This change is not backwards compatible with Angulars AbstractControl. All occurrence at minimum must be typed with `AbstractControl<any>`, or at best with a interface which describes all form fields.
+This change is not backwards compatible with Angulars AbstractControl. All occurrence at minimum must be typed with `AbstractControl<any>`, or at best with an interface which describes all form fields.
 
 ## How does it work
 
 This project does not modify any angular classes but provides new strongly typed definitions for Angulars own forms.
-For convenience it reexports this classes directly from angular
+For convenience it re-exports these classes directly from Angular.
 
 ### Hints
 
-* When working with FormBuilder and FormGroups always mention the type you want, or else the Typescript compiler tries to match
-every property, which does not work with nestet FormArrays or FormGroups.
+* When working with FormBuilder and FormGroups always mention the type you want, or else the TypeScript compiler tries to match
+every property, which does not work with nested FormArrays or FormGroups.
 ```
 form = fb.group<MyModel>({
   foo: null,
@@ -52,7 +52,7 @@ It's also important when working with FormArrays as part of complex FormGroups. 
 ## Alternatives
 
 * Angulars own effort to create typed forms (https://github.com/angular/angular/pull/20040).
-  But it's not yet merged and has - in my opinion - the drawback to fall back to untyped forms to easy. At the current state it also does not support typed FormBuilder.
+  But it's not yet merged and has - in my opinion - the drawback to fall back to untyped forms too easy. At the current state it also does not support typed FormBuilder.
 * [ngx-typed-form](https://github.com/Quramy/ngx-typed-forms) provides typed FormBuilder, but does not enforce the structure of any parameters.
   Because of the chosen implementation FormControl, FormGroup and FormArray are only interfaces and can not be used directly
 
@@ -63,8 +63,8 @@ If you find something not working as expected then there might be a problem in m
 
 ## Limitations
 
-* AbstractControl#value is not correctly typed for typescript strict mode. For FormGroup it returns only values of FormControls that are not disabled. So the correct type should be a DeepPartial<T>.
-  Typescript 2.8 supports conditional types to build this structure like
+* AbstractControl#value is not correctly typed for TypeScript strict mode. For FormGroup it returns only values of FormControls that are not disabled. So the correct type should be a DeepPartial<T>.
+  TypeScript 2.8 supports conditional types to build this structure like
   ```
   type DeepPartial<T> = {
     [P in keyof T]?: T[P] extends Array<infer U>
@@ -74,9 +74,9 @@ If you find something not working as expected then there might be a problem in m
         : DeepPartial<T[P]>
   };
   ```
-  When Angular uses Typescript 2.8 the return value should be changed.
+  When Angular uses TypeScript 2.8 the return value should be changed.
 * The get method on AbstractControl `AbstractControl#get(path: string|number [])` is impossible to statically type, because every subclass has a different implementation.
-  FormControll always return null, FormGroup only works with string keys and FormArray only with a numerical index.
+  FormControl always return null, FormGroup only works with string keys and FormArray only with a numerical index.
   Because I never needed a deeply nested access with both number and string, only string key up to a depth of 5 levels are currently supported. If this is not sufficient for you, please open an issue and explain your situation.
-* Because of it's nature to support only strongly typed forms, forms with dynamically added fields can not be build an a typesafe way.
+* Because of it's nature to support only strongly typed forms, forms with dynamically added fields can not be built an a typesafe way.
   Workaround: Use `AbstractControl<any>` or an interface with all possible fields set as optional.
