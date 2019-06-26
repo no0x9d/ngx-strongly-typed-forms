@@ -25,12 +25,12 @@
     "rxjs": "^5.x || ^6.x"
   },
   "devDependencies": {
-    "@angular/common": "^6.0.0",
-    "@angular/compiler": "^6.0.0",
-    "@angular/compiler-cli": "^6.0.0",
-    "@angular/core": "^6.0.0",
-    "@angular/forms": "^6.0.0",
-    "@angular/platform-browser": "^6.0.0",
+    "@angular/common": "^8.0.1",
+    "@angular/compiler": "^8.0.1",
+    "@angular/compiler-cli": "^8.0.1",
+    "@angular/core": "^8.0.1",
+    "@angular/forms": "^8.0.1",
+    "@angular/platform-browser": "^8.0.1",
     "fs-extra": "^5.0.0",
     "gulp": "^3.9.1",
     "gulp-bump": "^3.1.1",
@@ -38,9 +38,9 @@
     "gulp-rollup": "^2.15.0",
     "rollup": "^0.49.3",
     "run-sequence": "^1.2.2",
-    "rxjs": "^6.0.0",
-    "typescript": "^2.7.2",
-    "zone.js": "^0.8.26"
+    "rxjs": "^6.4.0",
+    "typescript": "~3.4",
+    "zone.js": "^0.9.1"
   },
   "repository": {
     "type": "git",
@@ -50,5 +50,8 @@
     "url": "https://github.com/no0x9d/ngx-strongly-typed-forms/issues"
   },
   "homepage": "https://github.com/no0x9d/ngx-strongly-typed-forms",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "tsickle": "^0.35.0"
+  }
 }
