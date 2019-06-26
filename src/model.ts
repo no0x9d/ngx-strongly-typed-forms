@@ -1,6 +1,7 @@
 import {AsyncValidatorFn as NgAsyncValidatorFn, ValidationErrors, ValidatorFn as NgValidatorFN} from '@angular/forms';
-import {FormHooks} from '@angular/forms/src/model';
 import {Observable} from 'rxjs';
+
+export type FormHooks = 'change' | 'blur' | 'submit';
 
 export type ValidatorFn<T> = NgValidatorFN | TypedValidatorFn<T>
 export type AsyncValidatorFn<T> = NgAsyncValidatorFn | TypedAsyncValidatorFn<T>
