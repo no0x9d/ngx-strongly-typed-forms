@@ -201,7 +201,7 @@ export abstract class AbstractControl<T> {
   /**
    * Retrieves the top-level ancestor of this control.
    */
-  readonly root: AbstractControl<T>;
+  readonly root: AbstractControl<any>;
 
   validator: ValidatorFn<T> | null;
   asyncValidator: AsyncValidatorFn<T> | null;
