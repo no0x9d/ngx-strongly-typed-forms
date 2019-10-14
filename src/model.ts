@@ -948,7 +948,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    *
    * @returns false for disabled controls, true otherwise.
    */
-  contains(controlName: string): boolean {
+  contains<K extends keyof T>(name: K): boolean {
     return
   };
 
@@ -986,9 +986,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    * observables emit events with the latest status and value when the control value is updated.
    * When false, no events are emitted.
    */
-  setValue(value: {
-    [key: string]: any;
-  }, options?: {
+  setValue(value: T, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void {
