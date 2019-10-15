@@ -201,7 +201,7 @@ export abstract class AbstractControl<T> {
   /**
    * Retrieves the top-level ancestor of this control.
    */
-  readonly root: AbstractControl<T>;
+  readonly root: AbstractControl<any>;
 
   validator: ValidatorFn<T> | null;
   asyncValidator: AsyncValidatorFn<T> | null;
@@ -626,7 +626,6 @@ export class FormArray<T> extends AbstractControl<T[]> {
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [number, K1, K2, K3]): AbstractControl<T[K1][K2][K3]> | null;
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [number, K1, K2, K3, K4]): AbstractControl<T[K1][K2][K3][K4]> | null;
   get(path: any): any {
-    return
   }
 
   /**
@@ -800,8 +799,41 @@ export class FormArray<T> extends AbstractControl<T[]> {
    * For enabled controls only, the `value` property is the best way to get the value of the array.
    */
   getRawValue(): T[] {
-    return
+    throw undefined
   };
+
+  /**
+   * Remove all controls in the `FormArray`.
+   *
+   * @usageNotes
+   * ### Remove all elements from a FormArray
+   *
+   * ```ts
+   * const arr = new FormArray([
+   *    new FormControl(),
+   *    new FormControl()
+   * ]);
+   * console.log(arr.length);  // 2
+   *
+   * arr.clear();
+   * console.log(arr.length);  // 0
+   * ```
+   *
+   * It's a simpler and more efficient alternative to removing all elements one by one:
+   *
+   * ```ts
+   * const arr = new FormArray([
+   *    new FormControl(),
+   *    new FormControl()
+   * ]);
+   *
+   * while (arr.length) {
+   *    arr.removeAt(0);
+   * }
+   * ```
+   */
+  clear(): void {
+  }
 }
 
 
@@ -907,7 +939,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    * @param control Provides the control for the given name
    */
   registerControl(name: string, control: AbstractControl<any>): AbstractControl<any> {
-    return
+    throw undefined
   };
 
   /**
@@ -949,7 +981,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    * @returns false for disabled controls, true otherwise.
    */
   contains(controlName: string): boolean {
-    return
+    throw undefined
   };
 
   /**
@@ -986,9 +1018,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    * observables emit events with the latest status and value when the control value is updated.
    * When false, no events are emitted.
    */
-  setValue(value: {
-    [key: string]: any;
-  }, options?: {
+  setValue(value: T, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void {
@@ -1104,7 +1134,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    * it excludes disabled controls in the `FormGroup`.
    */
   getRawValue(): T {
-    return
+    throw undefined
   };
 
   get<K1 extends keyof T>(path: [K1]): AbstractControl<T[K1]>;
@@ -1274,7 +1304,7 @@ export class FormControl<T> extends AbstractControl<T> {
    *
    * @see `setValue` for options
    */
-  patchValue(value: Partial<T>, options?: {
+  patchValue(value: T, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
     emitModelToViewChange?: boolean;
@@ -1307,7 +1337,7 @@ export class FormControl<T> extends AbstractControl<T> {
   };
 
   get(path: any): null {
-    return
+    return null;
   };
 
   /**
@@ -1368,7 +1398,7 @@ export class FormBuilder {
    *
    */
   group<T>(controlsConfig: ControlsConfig<T>, options?: FormBuilderFormGroupOptions<T> | AbstractControlOptions<T>): FormGroup<T> {
-    return
+    throw undefined
   };
 
   /**
@@ -1398,7 +1428,7 @@ export class FormBuilder {
   control<T>(formState: FormState<T>,
     validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | null,
     asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): FormControl<T> {
-    return
+    throw undefined
   };
 
   /**
@@ -1418,6 +1448,6 @@ export class FormBuilder {
   array<T>(controlsConfig: ControlConfig<T>[],
     validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | null,
     asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): FormArray<T> {
-    return
+    throw undefined
   };
 }
