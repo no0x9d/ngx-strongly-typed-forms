@@ -625,8 +625,7 @@ export class FormArray<T> extends AbstractControl<T[]> {
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): null;
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): null;
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): null;
-  get() {
-    return
+  get(path: any): any {
   }
 
   /**
@@ -800,8 +799,41 @@ export class FormArray<T> extends AbstractControl<T[]> {
    * For enabled controls only, the `value` property is the best way to get the value of the array.
    */
   getRawValue(): T[] {
-    return
+    throw undefined
   };
+
+  /**
+   * Remove all controls in the `FormArray`.
+   *
+   * @usageNotes
+   * ### Remove all elements from a FormArray
+   *
+   * ```ts
+   * const arr = new FormArray([
+   *    new FormControl(),
+   *    new FormControl()
+   * ]);
+   * console.log(arr.length);  // 2
+   *
+   * arr.clear();
+   * console.log(arr.length);  // 0
+   * ```
+   *
+   * It's a simpler and more efficient alternative to removing all elements one by one:
+   *
+   * ```ts
+   * const arr = new FormArray([
+   *    new FormControl(),
+   *    new FormControl()
+   * ]);
+   *
+   * while (arr.length) {
+   *    arr.removeAt(0);
+   * }
+   * ```
+   */
+  clear(): void {
+  }
 }
 
 
@@ -907,7 +939,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    * @param control Provides the control for the given name
    */
   registerControl(name: string, control: AbstractControl<any>): AbstractControl<any> {
-    return
+    throw undefined
   };
 
   /**
@@ -948,8 +980,8 @@ export class FormGroup<T> extends AbstractControl<T> {
    *
    * @returns false for disabled controls, true otherwise.
    */
-  contains<K extends keyof T>(name: K): boolean {
-    return
+  contains(controlName: string): boolean {
+    throw undefined
   };
 
   /**
@@ -1102,7 +1134,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    * it excludes disabled controls in the `FormGroup`.
    */
   getRawValue(): T {
-    return
+    throw undefined
   };
 
   get<K extends keyof T>(path: K): AbstractControl<T[K]> | null;
@@ -1111,7 +1143,7 @@ export class FormGroup<T> extends AbstractControl<T> {
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3]> | null;
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4]> | null;
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): AbstractControl<T[K1][K2][K3][K4][K5]> | null;
-  get(path): any {
+  get(path: any): any {
   }
 }
 
@@ -1310,8 +1342,7 @@ export class FormControl<T> extends AbstractControl<T> {
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2]): null;
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2]): null;
   get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2]): null;
-  get() {
-    return
+  get(path: any): any {
   };
 
   /**
@@ -1372,7 +1403,7 @@ export class FormBuilder {
    *
    */
   group<T>(controlsConfig: ControlsConfig<T>, options?: FormBuilderFormGroupOptions<T> | AbstractControlOptions<T>): FormGroup<T> {
-    return
+    throw undefined
   };
 
   /**
@@ -1402,7 +1433,7 @@ export class FormBuilder {
   control<T>(formState: FormState<T>,
     validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | null,
     asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): FormControl<T> {
-    return
+    throw undefined
   };
 
   /**
@@ -1422,6 +1453,6 @@ export class FormBuilder {
   array<T>(controlsConfig: ControlConfig<T>[],
     validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | null,
     asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): FormArray<T> {
-    return
+    throw undefined
   };
 }
