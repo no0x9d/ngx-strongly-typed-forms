@@ -11,8 +11,11 @@ fooFormGroup = new FormGroup<Foo>({
 });
 let barControl: AbstractControl<Bar> = fooFormGroup.get(['field']);
 barControl = fooFormGroup.get('field');
+// should be null as 'prop' is only a field in the 'field' FormControl and FormControl.get always returns null
 let stringControl: AbstractControl<string> | null = fooFormGroup.get(['field', 'prop']);
+// should be null as 'prop' is only a field in the 'field' FormControl and FormControl.get always returns null
 let s: string = fooFormGroup.get(['field', 'prop'])!.value;
+// should be null as 'prop' is only a field in the 'field' FormControl and FormControl.get always returns null
 stringControl = fooFormGroup.get('field')!.get('prop');
 const barArray: AbstractControl<Bar[]> | null = fooFormGroup.get('array');
 
