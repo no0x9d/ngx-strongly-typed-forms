@@ -201,7 +201,7 @@ export abstract class AbstractControl<T> {
   /**
    * Retrieves the top-level ancestor of this control.
    */
-  readonly root: AbstractControl<T>;
+  readonly root: AbstractControl<any>;
 
   validator: ValidatorFn<T> | null;
   asyncValidator: AsyncValidatorFn<T> | null;
@@ -1018,9 +1018,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    * observables emit events with the latest status and value when the control value is updated.
    * When false, no events are emitted.
    */
-  setValue(value: {
-    [key: string]: any;
-  }, options?: {
+  setValue(value: T, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void {
@@ -1306,7 +1304,7 @@ export class FormControl<T> extends AbstractControl<T> {
    *
    * @see `setValue` for options
    */
-  patchValue(value: Partial<T>, options?: {
+  patchValue(value: T, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
     emitModelToViewChange?: boolean;
