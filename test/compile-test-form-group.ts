@@ -3,13 +3,13 @@ import {Address, Bar, Foo, Hero} from './interfaces';
 
 let fooFormGroup: FormGroup<Foo> = new FormGroup<Foo>({
   field: new FormControl<Bar>(undefined),
-  array: new FormArray([])
+  array: new FormArray<Bar>([])
 });
 fooFormGroup = new FormGroup<Foo>({
   field: new FormControl<Bar>(undefined),
   array: new FormArray([new FormControl<Bar>({prop: ""}), new FormControl<Bar>(undefined)])
 });
-let barControl: AbstractControl<Bar> | null = fooFormGroup.get(['field']);
+let barControl: AbstractControl<Bar> = fooFormGroup.get(['field']);
 barControl = fooFormGroup.get('field');
 let stringControl: AbstractControl<string> | null = fooFormGroup.get(['field', 'prop']);
 let s: string = fooFormGroup.get(['field', 'prop'])!.value;
