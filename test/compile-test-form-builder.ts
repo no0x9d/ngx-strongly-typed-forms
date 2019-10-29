@@ -32,8 +32,13 @@ const namecontrol: AbstractControl<string> | null = heroFormGroup.get('name');
 const lairs: AbstractControl<Address[]> | null = heroFormGroup.get('secretLairs');
 
 let barFormGroup: FormGroup<Bar>;
-barFormGroup= fb.group<Bar>([{prop: ''}]);
-barFormGroup = fb.group<Bar>([{value: {prop: ''}, disabled: true}]);
-barFormGroup = fb.group<Bar>([{prop: ''}, Validators.required]);
-barFormGroup = fb.group<Bar>([{prop: ''}, [Validators.required, Validators.minLength(5)]]);
+barFormGroup= fb.group<Bar>({prop: ''});
+barFormGroup = fb.group<Bar>({prop: {value: '', disabled: true}});
+barFormGroup = fb.group<Bar>({prop: ['', Validators.required]});
+barFormGroup = fb.group<Bar>({prop: ['', [Validators.required, Validators.minLength(5)]]});
 
+let barFormControl: FormControl<Bar>;
+barFormControl= fb.control<Bar>({prop: ''});
+barFormControl = fb.control<Bar>({value: {prop: ''}, disabled: true});
+barFormControl = fb.control<Bar>({prop: ''}, Validators.required);
+barFormControl = fb.control<Bar>({prop: ''}, [Validators.required, Validators.minLength(5)]);

@@ -13,7 +13,7 @@ export type StateAndValidators<T> = [FormState<T>] |
   [FormState<T>, ValidatorFn<T> | ValidatorFn<T>[] | null, AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null]
 
 export type ControlConfig<T> = FormState<T> | StateAndValidators<T> | AbstractControl<T>;
-export type ControlsConfig<T> = ControlConfig<T> | { [P in keyof T]: ControlConfig<T[P]> };
+export type ControlsConfig<T> = { [P in keyof T]: ControlConfig<T[P]> };
 
 export interface AbstractControlOptions<T> {
   validators?: ValidatorFn<T> | ValidatorFn<T>[] | null;
