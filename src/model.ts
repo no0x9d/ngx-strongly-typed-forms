@@ -1,4 +1,12 @@
-import {AsyncValidatorFn as NgAsyncValidatorFn, ValidationErrors, ValidatorFn as NgValidatorFN} from '@angular/forms';
+import {
+  AsyncValidatorFn as NgAsyncValidatorFn,
+  ValidationErrors,
+  ValidatorFn as NgValidatorFN,
+  AbstractControl as NgAbstractControl,
+  FormArray as NgFormArray,
+  FormGroup as NgFormGroup,
+  FormControl as NgFormControl
+} from '@angular/forms';
 import {Observable} from 'rxjs';
 
 export type FormHooks = 'change' | 'blur' | 'submit';
@@ -22,11 +30,11 @@ export interface AbstractControlOptions<T> {
 }
 
 export interface TypedValidatorFn<T> {
-  (c: AbstractControl<T>): ValidationErrors | null;
+  (control: AbstractControl<T>): ValidationErrors | null;
 }
 
 export interface TypedAsyncValidatorFn<T> {
-  (c: AbstractControl<T>): Promise<ValidationErrors | null> | Observable<ValidationErrors | null>;
+  (control: AbstractControl<T>): Promise<ValidationErrors | null> | Observable<ValidationErrors | null>;
 }
 
 export interface Validator<T> {
@@ -52,7 +60,7 @@ export interface AsyncValidator<T> extends Validator<T> {
  * @see [Dynamic Forms Guide](/guide/dynamic-form)
  *
  */
-export abstract class AbstractControl<T> {
+abstract class TypedAbstractControl<T> {
 
   /**
    * The parent control.
@@ -519,6 +527,8 @@ export abstract class AbstractControl<T> {
   };
 }
 
+export type AbstractControl<T> = NgAbstractControl & TypedAbstractControl<T>;
+
 /**
  * Tracks the value and validity state of an array of `FormControl`,
  * `FormGroup` or `FormArray` instances.
@@ -583,7 +593,7 @@ export abstract class AbstractControl<T> {
  *
  *
  */
-export class FormArray<T> extends AbstractControl<T[]> {
+class TypedFormArray<T> extends TypedAbstractControl<T[]> {
 
   /**
    * Creates a new `FormArray` instance.
@@ -836,6 +846,8 @@ export class FormArray<T> extends AbstractControl<T[]> {
   }
 }
 
+export type FormArray<T> = NgFormArray & TypedFormArray<T>;
+export const FormArray = Object.assign(NgFormArray, TypedFormArray);
 
 /**
  * Tracks the value and validity state of a group of `FormControl` instances.
@@ -907,7 +919,7 @@ export class FormArray<T> extends AbstractControl<T[]> {
  * }, { updateOn: 'blur' });
  * ```
  */
-export class FormGroup<T> extends AbstractControl<T> {
+class TypedFormGroup<T> extends TypedAbstractControl<T> {
   controls: Controls<T>;
 
   /**
@@ -1147,6 +1159,8 @@ export class FormGroup<T> extends AbstractControl<T> {
   }
 }
 
+export type FormGroup<T> = NgFormGroup & TypedFormGroup<T>;
+export const FormGroup = Object.assign(NgFormGroup, TypedFormGroup);
 
 /**
  * Tracks the value and validation status of an individual form control.
@@ -1243,7 +1257,7 @@ export class FormGroup<T> extends AbstractControl<T> {
  * console.log(control.status); // 'DISABLED'
  *
  */
-export class FormControl<T> extends AbstractControl<T> {
+class TypedFormControl<T> extends TypedAbstractControl<T> {
 
   /**
    * Creates a new `FormControl` instance.
@@ -1356,6 +1370,9 @@ export class FormControl<T> extends AbstractControl<T> {
   registerOnDisabledChange(fn: (isDisabled: boolean) => void): void {
   };
 }
+
+export type FormControl<T> = NgFormControl & TypedFormControl<T>;
+export const FormControl = Object.assign(NgFormControl, TypedFormControl);
 
 export interface FormBuilderFormGroupOptions<T> {
   validator?: ValidatorFn<T> | ValidatorFn<T>[] | null;
