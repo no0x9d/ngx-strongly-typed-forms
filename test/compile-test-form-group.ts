@@ -1,4 +1,5 @@
 import {AbstractControl, FormArray, FormControl, FormGroup} from '../src/model';
+import {AbstractControl as NgAbstractControl} from '@angular/forms';
 import {Address, Bar, Foo, Hero} from './interfaces';
 
 let fooFormGroup: FormGroup<Foo> = new FormGroup<Foo>({
@@ -16,7 +17,7 @@ let stringControl: AbstractControl<string> | null = fooFormGroup.get(['field', '
 // should be null as 'prop' is only a field in the 'field' FormControl and FormControl.get always returns null
 let s: string = fooFormGroup.get(['field', 'prop'])!.value;
 // should be null as 'prop' is only a field in the 'field' FormControl and FormControl.get always returns null
-stringControl = fooFormGroup.get('field')!.get('prop');
+const untypedControl: NgAbstractControl | null = fooFormGroup.get('field').get('prop');
 const barArray: AbstractControl<Bar[]> | null = fooFormGroup.get('array');
 
 const heroFormGroup: FormGroup<Hero> = {} as FormGroup<Hero>;
