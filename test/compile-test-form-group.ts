@@ -1,5 +1,5 @@
-import { FormArray, FormControl, FormGroup, Static } from '../src/model';
-import { Bar } from './interfaces';
+import {FormArray, FormControl, FormGroup, Static} from '../src/model';
+import {Bar} from './interfaces';
 
 let fooFormGroup = new FormGroup({
   field: new FormControl<Bar>(undefined),
