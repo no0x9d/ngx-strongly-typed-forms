@@ -1,27 +1,48 @@
-import {AbstractControl, FormArray, FormControl, FormGroup} from '../src/model';
-import {Address, Bar, Foo, Hero} from './interfaces';
+import {FormArray, FormControl, FormGroup, Static} from '../src/model';
+import {Bar} from './interfaces';
 
-let fooFormGroup: FormGroup<Foo> = new FormGroup<Foo>({
+let fooFormGroup = new FormGroup({
   field: new FormControl<Bar>(undefined),
-  array: new FormArray<Bar>([])
+  group: new FormGroup({
+    prop: new FormControl('')
+  }),
+  array: new FormArray(new Array<FormControl<Bar>>())
 });
-fooFormGroup = new FormGroup<Foo>({
+fooFormGroup = new FormGroup({
   field: new FormControl<Bar>(undefined),
+  group: new FormGroup({
+    prop: new FormControl('')
+  }),
   array: new FormArray([new FormControl<Bar>({prop: ""}), new FormControl<Bar>(undefined)])
 });
-let barControl: AbstractControl<Bar> = fooFormGroup.get(['field']);
+let barControl: FormControl<Bar> = fooFormGroup.get(['field']);
 barControl = fooFormGroup.get('field');
-// should be null as 'prop' is only a field in the 'field' FormControl and FormControl.get always returns null
-let stringControl: AbstractControl<string> | null = fooFormGroup.get(['field', 'prop']);
-// should be null as 'prop' is only a field in the 'field' FormControl and FormControl.get always returns null
-let s: string = fooFormGroup.get(['field', 'prop'])!.value;
-// should be null as 'prop' is only a field in the 'field' FormControl and FormControl.get always returns null
-stringControl = fooFormGroup.get('field')!.get('prop');
-const barArray: AbstractControl<Bar[]> | null = fooFormGroup.get('array');
+barControl = fooFormGroup.controls.field;
 
-const heroFormGroup: FormGroup<Hero> = {} as FormGroup<Hero>;
-const namecontrol: AbstractControl<string> | null = heroFormGroup.get('name');
-const lairsControl: AbstractControl<Address[]> | null = heroFormGroup.get('secretLairs');
+// This is correctly recognised as an error
+// Unfortunately the error message isn't very helpful: Argument of type 'string[]' is not assignable to parameter of type '"field" | "array"'
+// let stringControl = fooFormGroup.get(['field', 'prop']);
+
+// the group version works as expected
+let stringControl: FormControl<string> = fooFormGroup.get(['group', 'prop']);
+stringControl = fooFormGroup.controls.group.controls.prop;
+
+const nullControl: null = fooFormGroup.get('field')!.get('prop');
+
+let barArray: FormArray<FormControl<Bar>> = fooFormGroup.get('array');
+barArray = fooFormGroup.controls.array;
+
+// Typescript array dereference is never null so the "get" must also not return null to be consistent, even if sometimes incorrect.
+barControl = fooFormGroup.get(['array', 0]);
+barControl = fooFormGroup.controls.array.controls[0];
 
 // partial Reset
 fooFormGroup.reset({field: new Bar()});
+type Foo = Static<typeof fooFormGroup>;
+const foo: Foo = {
+  field: new Bar(),
+  group: {
+    prop: ''
+  },
+  array: [new Bar()]
+}
