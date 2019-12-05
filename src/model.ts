@@ -6,7 +6,7 @@ export type FormHooks = 'change' | 'blur' | 'submit';
 export type ValidatorFn<T> = NgValidatorFN | TypedValidatorFn<T>
 export type AsyncValidatorFn<T> = NgAsyncValidatorFn | TypedAsyncValidatorFn<T>
 
-export type Controls<T = unknown> = { [P in keyof T]: AbstractControl<T[P]> };
+export type Controls<T = unknown> = { [P in keyof T]: AbstractControl<T[P], any> };
 export type FormState<T> = T | { value: T, disabled: boolean };
 export type StateAndValidators<T> = [FormState<T>] |
   [FormState<T>, ValidatorFn<T> | ValidatorFn<T>[]] |
