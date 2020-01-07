@@ -3,7 +3,7 @@
   "version": "8.0.1",
   "description": "Strongly typed definitions for Angulars @angular/forms",
   "main": "src/model.js",
-  "types": "src/model.d.ts",
+  "types": "dist/model.d.ts",
   "scripts": {
     "build": "gulp build",
     "build:watch": "gulp",
