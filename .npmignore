@@ -4,4 +4,3 @@ node_modules/
 test/
 tsconfig.json
 ngx-strongly-typed-forms-*.tgz
-dist/
