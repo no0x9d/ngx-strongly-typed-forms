@@ -5,7 +5,7 @@ var gulp = require('gulp'),
   rollup = require('gulp-rollup'),
   rename = require('gulp-rename'),
   fs = require('fs-extra'),
-  runSequence = require('run-sequence'),
+  runSequence = require('gulp4-run-sequence'),
   bump = require('gulp-bump');
 const version = require('./package').version;
 
@@ -22,7 +22,7 @@ gulp.task('clean:dist', function () {
 
   // Delete contents but not dist folder to avoid broken npm links
   // when dist directory is removed while npm link references it.
-  return fs.emptyDirSync(distFolder);
+  return fs.emptyDir(distFolder);
 });
 
 /**
@@ -167,7 +167,7 @@ gulp.task('copy:manifest', function () {
  * 9. Copy README.md from / to /dist
  */
 gulp.task('copy:readme', function () {
-  return gulp.src([path.join(rootFolder, 'README.MD')])
+  return gulp.src([path.join(rootFolder, 'README.md')])
     .pipe(gulp.dest(distFolder));
 });
 
@@ -193,7 +193,7 @@ gulp.task('clean:build', function () {
   return deleteFolder(buildFolder);
 });
 
-gulp.task('compile', function () {
+gulp.task('compile', async function () {
 });
 runSequence(
   'clean:dist',
@@ -231,18 +231,18 @@ gulp.task('clean', function (callback) {
 });
 
 gulp.task('build', function (callback) {
-  runSequence('clean', 'compile', callback);
+  return runSequence('clean', 'compile', callback);
 });
 
 gulp.task('build:watch', function (callback) {
   runSequence('build', 'watch', callback);
 });
 
-gulp.task('default', ['build:watch']);
+gulp.task('default', gulp.series('build:watch'));
 
 /**
  * Deletes the specified folder
  */
 function deleteFolder(folder) {
-  return fs.removeSync(folder);
+  return fs.remove(folder);
 }
