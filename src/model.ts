@@ -1065,7 +1065,7 @@ export class FormGroup<T extends Controls<any> = Controls> extends AbstractContr
    * The configuration options are passed to the {@link AbstractControl#updateValueAndValidity
    * updateValueAndValidity} method.
    */
-  patchValue(value: Partial<Static<this>>, options?: {
+  patchValue(value: Partial<ControlsStaticType<T>>, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void {
@@ -1128,7 +1128,7 @@ export class FormGroup<T extends Controls<any> = Controls> extends AbstractContr
    * console.log(this.form.get('first').status);  // 'DISABLED'
    * ```
    */
-  reset(value?: Partial<Static<this>>, options?: {
+  reset(value?: Partial<ControlsStaticType<T>>, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void {
