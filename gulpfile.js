@@ -5,7 +5,7 @@ var gulp = require('gulp'),
   rollup = require('gulp-rollup'),
   rename = require('gulp-rename'),
   fs = require('fs-extra'),
-  runSequence = require('run-sequence'),
+  runSequence = require('gulp4-run-sequence'),
   bump = require('gulp-bump');
 const version = require('./package').version;
 
@@ -22,7 +22,7 @@ gulp.task('clean:dist', function () {
 
   // Delete contents but not dist folder to avoid broken npm links
   // when dist directory is removed while npm link references it.
-  return fs.emptyDirSync(distFolder);
+  return fs.emptyDir(distFolder);
 });
 
 /**
@@ -155,31 +155,6 @@ gulp.task('copy:build', function () {
 });
 
 /**
- * 8. Copy package.json from /src to /dist
- */
-gulp.task('copy:manifest', function () {
-  return gulp.src([`${srcFolder}/package.json`])
-    .pipe(bump({version: version}))
-    .pipe(gulp.dest(distFolder));
-});
-
-/**
- * 9. Copy README.md from / to /dist
- */
-gulp.task('copy:readme', function () {
-  return gulp.src([path.join(rootFolder, 'README.MD')])
-    .pipe(gulp.dest(distFolder));
-});
-
-/**
- * 10. Copy LICENCE file from / to /dist
- */
-gulp.task('copy:license', function () {
-  return gulp.src([path.join(rootFolder, 'LICENSE')])
-    .pipe(gulp.dest(distFolder));
-});
-
-/**
  * 11. Delete /.tmp folder
  */
 gulp.task('clean:tmp', function () {
@@ -193,7 +168,7 @@ gulp.task('clean:build', function () {
   return deleteFolder(buildFolder);
 });
 
-gulp.task('compile', function () {
+gulp.task('compile', async function () {
 });
 runSequence(
   'clean:dist',
@@ -203,9 +178,6 @@ runSequence(
   'rollup:fesm',
   'rollup:umd',
   'copy:build',
-  'copy:manifest',
-  'copy:license',
-  'copy:readme',
   'clean:build',
   'clean:tmp',
   function (err) {
@@ -231,18 +203,18 @@ gulp.task('clean', function (callback) {
 });
 
 gulp.task('build', function (callback) {
-  runSequence('clean', 'compile', callback);
+  return runSequence('clean', 'compile', callback);
 });
 
 gulp.task('build:watch', function (callback) {
   runSequence('build', 'watch', callback);
 });
 
-gulp.task('default', ['build:watch']);
+gulp.task('default', gulp.series('build:watch'));
 
 /**
  * Deletes the specified folder
  */
 function deleteFolder(folder) {
-  return fs.removeSync(folder);
+  return fs.remove(folder);
 }
