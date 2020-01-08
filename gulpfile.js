@@ -155,31 +155,6 @@ gulp.task('copy:build', function () {
 });
 
 /**
- * 8. Copy package.json from /src to /dist
- */
-gulp.task('copy:manifest', function () {
-  return gulp.src([`${srcFolder}/package.json`])
-    .pipe(bump({version: version}))
-    .pipe(gulp.dest(distFolder));
-});
-
-/**
- * 9. Copy README.md from / to /dist
- */
-gulp.task('copy:readme', function () {
-  return gulp.src([path.join(rootFolder, 'README.md')])
-    .pipe(gulp.dest(distFolder));
-});
-
-/**
- * 10. Copy LICENCE file from / to /dist
- */
-gulp.task('copy:license', function () {
-  return gulp.src([path.join(rootFolder, 'LICENSE')])
-    .pipe(gulp.dest(distFolder));
-});
-
-/**
  * 11. Delete /.tmp folder
  */
 gulp.task('clean:tmp', function () {
@@ -203,9 +178,6 @@ runSequence(
   'rollup:fesm',
   'rollup:umd',
   'copy:build',
-  'copy:manifest',
-  'copy:license',
-  'copy:readme',
   'clean:build',
   'clean:tmp',
   function (err) {

@@ -2,8 +2,12 @@
   "name": "ngx-strongly-typed-forms",
   "version": "8.0.1",
   "description": "Strongly typed definitions for Angulars @angular/forms",
-  "main": "src/model.js",
-  "types": "dist/model.d.ts",
+  "main": "dist/ngx-strongly-typed-forms.umd.js",
+  "types": "dist/ngx-strongly-typed-forms.d.ts",
+  "module": "dist/public_api.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "gulp build",
     "build:watch": "gulp",
@@ -51,7 +55,6 @@
     "url": "https://github.com/no0x9d/ngx-strongly-typed-forms/issues"
   },
   "homepage": "https://github.com/no0x9d/ngx-strongly-typed-forms",
-  "private": true,
   "dependencies": {
     "tsickle": "^0.35.0"
   }
