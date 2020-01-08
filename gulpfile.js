@@ -9,6 +9,9 @@ var gulp = require('gulp'),
   bump = require('gulp-bump');
 const version = require('./package').version;
 
+// for the side effect of configuring ngc
+require('@angular/compiler-cli');
+
 const rootFolder = path.join(__dirname);
 const srcFolder = path.join(rootFolder, 'src');
 const tmpFolder = path.join(rootFolder, '.tmp');
