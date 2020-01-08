@@ -3,8 +3,8 @@
 ```bash
 npm install ngx-strongly-typed-forms
 ```
-**Attention:** Since version 7.2 this project does no longer follow semver version numbers. 
-The major and minor version represents the compatible Angular version and patch versions are bugfixes in this library.   
+**Attention:** Since version 7.2 this project does no longer follow semver version numbers.
+The major and minor version represents the compatible Angular version and patch versions are bugfixes in this library.
 
 
 Now you can import generic FormControl, FormGroup and FormArray and use them instead of the classes from `@angular/forms`
@@ -36,18 +36,35 @@ For convenience it re-exports these classes directly from Angular.
 
 ### Hints
 
-* When working with FormBuilder and FormGroups always mention the type you want, or else the TypeScript compiler tries to match
-every property, which does not work with nested FormArrays or FormGroups.
+* When working with `FormControl` always mention the type you want, or else the TypeScript compiler loses type safety by inferring `any`.
+For the same reason the `FormArray` sub-control type should be specified unless at least one sub-control is included.
 ```
-form = fb.group<MyModel>({
-  foo: null,
-  bar: ["bar", Validators.required],
-  baz: fb.array<Baz>([])
-})
+form = fb.group({
+  foo: fb.control<string>("foo"),
+  bar: fb.control<string>("bar", Validators.required),
+  baz1: fb.array<FormControl<Baz>>([]),
+  baz2: fb.array([fb.control<Baz>(undefined)])
+});
 ```
 
 * `FormArray<T>` extends `AbstractControl<T[]>`. So if you have a `FormArray<string>` you can assign it to an `AbstractControl<string[]>`. This is necessary, because for instance `FormArray.get` returns a single instance of type `T` but `FormArray.value` returns `T[]`.
 It's also important when working with FormArrays as part of complex FormGroups. The generic type of the FormArray must always be the same as the generic of the Array in the model.
+
+* Specifying a type parameter in the `FormBuilder` methods will provide the original functionality of all inner controls being typed as `AbstractControl`s. Full control type inference is supported by removing the type parameter, eg.,
+
+``` typescript
+form = fb.group({
+  array: fb.array([
+    fb.control<string>("")
+  ])
+});
+// this typechecks
+stringcontrol: FormControl<string> = form.controls.array[0];
+
+* Unfortunately the type errors when using full control type inference are not good as of Typescript v3.4
+  * `Types of property 'controls' are incompatible` means that the types do not align exactly - FormControl<string> will not match a model which is of ype string | undefined or an optional field such as `{ foo?: string }`
+  * `Argument of type 'string[]' is not assignable to parameter of type ...` when calling `control.get([...])` means that the control "path" does not match the sub-controls defined.
+```
 
 ## Alternatives
 

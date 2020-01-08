@@ -6,7 +6,7 @@ export type FormHooks = 'change' | 'blur' | 'submit';
 export type ValidatorFn<T> = NgValidatorFN | TypedValidatorFn<T>
 export type AsyncValidatorFn<T> = NgAsyncValidatorFn | TypedAsyncValidatorFn<T>
 
-export type Controls<T> = { [P in keyof T]: AbstractControl<T[P]> };
+export type Controls<T = unknown> = { [P in keyof T]: AbstractControl<T[P], any> };
 export type FormState<T> = T | { value: T, disabled: boolean };
 export type StateAndValidators<T> = [FormState<T>] |
   [FormState<T>, ValidatorFn<T> | ValidatorFn<T>[]] |
@@ -39,6 +39,17 @@ export interface AsyncValidator<T> extends Validator<T> {
   validate(c: AbstractControl<T>): Promise<ValidationErrors | null> | Observable<ValidationErrors | null>;
 }
 
+// helpers to support typing 'get'
+type HasControls = FormArray | FormGroup;
+type GetControls<T extends HasControls> = T['controls'];
+type GetControlKeys<T extends HasControls> = keyof GetControls<T>;
+type GetControl<T extends HasControls, K extends GetControlKeys<T>> = GetControls<T>[K];
+
+/**
+ * Get the type of the data stored by a control.
+ */
+export type Static<T extends AbstractControl<any>> = T['value'];
+
 /**
  * This is the base class for `FormControl`, `FormGroup`, and `FormArray`.
  *
@@ -52,7 +63,8 @@ export interface AsyncValidator<T> extends Validator<T> {
  * @see [Dynamic Forms Guide](/guide/dynamic-form)
  *
  */
-export abstract class AbstractControl<T> {
+// <T> is the type of the value stored by the control, <C> is the type of the inner controls, if any
+export abstract class AbstractControl<T = unknown, C = unknown> {
 
   /**
    * The parent control.
@@ -376,7 +388,7 @@ export abstract class AbstractControl<T> {
   /**
    * Patches the value of the control. Abstract method (implemented in sub-classes).
    */
-  abstract patchValue(value: Partial<T>, options?: Object): void;
+  abstract patchValue(value: T, options?: Object): void;
 
   /**
    * Resets the control. Abstract method (implemented in sub-classes).
@@ -446,12 +458,16 @@ export abstract class AbstractControl<T> {
    *
    * * `this.form.get(['person', 'name']);`
    */
-  abstract get<K extends keyof T>(path: K): AbstractControl<T[K]> | null;
-  abstract get<K1 extends keyof T>(path: [K1]): AbstractControl<T[K1]> | null;
-  abstract get<K1 extends keyof T, K2 extends keyof T[K1]>(path: [K1, K2]): AbstractControl<T[K1][K2]> | null;
-  abstract get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2, K3]): AbstractControl<T[K1][K2][K3]> | null;
-  abstract get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2, K3, K4]): AbstractControl<T[K1][K2][K3][K4]> | null;
-  abstract get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2, K3, K4, K5]): AbstractControl<T[K1][K2][K3][K4][K5]> | null;
+  get<K1 extends keyof C>(path: [K1]): C[K1];
+  get<K1 extends keyof C, C2 extends C[K1] & HasControls, K2 extends GetControlKeys<C2>>(path: [K1, K2]): GetControl<C2, K2>;
+  get<K1 extends keyof C, C2 extends C[K1] & HasControls, K2 extends GetControlKeys<C2>, C3 extends GetControl<C2, K2> & HasControls, K3 extends GetControlKeys<C3>>(path: [K1, K2, K3]): GetControl<C3, K3>;
+  get<K1 extends keyof C, C2 extends C[K1] & HasControls, K2 extends GetControlKeys<C2>, C3 extends GetControl<C2, K2> & HasControls, K3 extends GetControlKeys<C3>, C4 extends GetControl<C3, K3> & HasControls, K4 extends GetControlKeys<C4>>(path: [K1, K2, K3, K4]): GetControl<C4, K4>;
+  get<K1 extends keyof C, C2 extends C[K1] & HasControls, K2 extends GetControlKeys<C2>, C3 extends GetControl<C2, K2> & HasControls, K3 extends GetControlKeys<C3>, C4 extends GetControl<C3, K3> & HasControls, K4 extends GetControlKeys<C4>, C5 extends GetControl<C4, K4> & HasControls, K5 extends GetControlKeys<C5>>(path: [K1, K2, K3, K4, K5]): GetControl<C5, K5>;
+
+  get<K1 extends keyof C>(path: K1): C[K1];
+
+  get(path: any): any {
+  }
 
   /**
    * @description
@@ -583,7 +599,8 @@ export abstract class AbstractControl<T> {
  *
  *
  */
-export class FormArray<T> extends AbstractControl<T[]> {
+export class FormArray<T extends AbstractControl<any> = AbstractControl> extends AbstractControl<Array<Static<T>>, Array<T>> {
+  controls: Array<T>;
 
   /**
    * Creates a new `FormArray` instance.
@@ -598,13 +615,11 @@ export class FormArray<T> extends AbstractControl<T[]> {
    * @param asyncValidator A single async validator or array of async validator functions
    *
    */
-  constructor(controls: AbstractControl<T>[],
-    validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions<T> | null,
-    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null) {
+  constructor(controls: Array<T>,
+    validatorOrOpts?: ValidatorFn<Static<T>> | ValidatorFn<Static<T>>[] | AbstractControlOptions<Static<T>> | null,
+    asyncValidator?: AsyncValidatorFn<Static<T>> | AsyncValidatorFn<Static<T>>[] | null) {
     super()
   };
-
-  controls: AbstractControl<T>[];
 
   /**
    * Length of the control array.
@@ -616,24 +631,16 @@ export class FormArray<T> extends AbstractControl<T[]> {
    *
    * @param index Index in the array to retrieve the control
    */
-  at(index: number): AbstractControl<T> {
+  at(index: number): T {
     return this.controls[index]
   };
-
-  get(path: [number]): AbstractControl<T> | null;
-  get<K1 extends keyof T>(path: [number, K1]): AbstractControl<T[K1]> | null;
-  get<K1 extends keyof T, K2 extends keyof T[K1]>(path: [number, K1, K2]): AbstractControl<T[K1][K2]> | null;
-  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [number, K1, K2, K3]): AbstractControl<T[K1][K2][K3]> | null;
-  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [number, K1, K2, K3, K4]): AbstractControl<T[K1][K2][K3][K4]> | null;
-  get(path: any): any {
-  }
 
   /**
    * Insert a new `AbstractControl` at the end of the array.
    *
    * @param control Form control to be inserted
    */
-  push(control: AbstractControl<T>): void {
+  push(control: T): void {
   };
 
   /**
@@ -642,7 +649,7 @@ export class FormArray<T> extends AbstractControl<T[]> {
    * @param index Index in the array to insert the control
    * @param control Form control to be inserted
    */
-  insert(index: number, control: AbstractControl<T>): void {
+  insert(index: number, control: T): void {
   };
 
   /**
@@ -659,7 +666,7 @@ export class FormArray<T> extends AbstractControl<T[]> {
    * @param index Index in the array to replace the control
    * @param control The `AbstractControl` control to replace the existing control
    */
-  setControl(index: number, control: AbstractControl<T>): void {
+  setControl(index: number, control: T): void {
   };
 
   /**
@@ -696,7 +703,7 @@ export class FormArray<T> extends AbstractControl<T[]> {
    * The configuration options are passed to the {@link AbstractControl#updateValueAndValidity
    * updateValueAndValidity} method.
    */
-  setValue(value: T[], options?: {
+  setValue(value: Static<this>, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void {
@@ -735,7 +742,7 @@ export class FormArray<T> extends AbstractControl<T[]> {
    * The configuration options are passed to the {@link AbstractControl#updateValueAndValidity
    * updateValueAndValidity} method.
    */
-  patchValue(value: T[], options?: {
+  patchValue(value: Static<this>, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void {
@@ -786,7 +793,7 @@ export class FormArray<T> extends AbstractControl<T[]> {
    * The configuration options are passed to the {@link AbstractControl#updateValueAndValidity
    * updateValueAndValidity} method.
    */
-  reset(value?: T[], options?: {
+  reset(value?: Static<this>, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void {
@@ -798,7 +805,7 @@ export class FormArray<T> extends AbstractControl<T[]> {
    * Reports all values regardless of disabled status.
    * For enabled controls only, the `value` property is the best way to get the value of the array.
    */
-  getRawValue(): T[] {
+  getRawValue(): Static<this> {
     throw undefined
   };
 
@@ -907,8 +914,9 @@ export class FormArray<T> extends AbstractControl<T[]> {
  * }, { updateOn: 'blur' });
  * ```
  */
-export class FormGroup<T> extends AbstractControl<T> {
-  controls: Controls<T>;
+type ControlsStaticType<T extends { [_: string]: AbstractControl }> = { [K in keyof T]: Static<T[K]> };
+export class FormGroup<T extends Controls<any> = Controls> extends AbstractControl<ControlsStaticType<T>, T> {
+  controls: T;
 
   /**
    * Creates a new `FormGroup` instance.
@@ -923,9 +931,9 @@ export class FormGroup<T> extends AbstractControl<T> {
    * @param asyncValidator A single async validator or array of async validator functions
    *
    */
-  constructor(controls: Controls<T>,
-    validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | AbstractControlOptions<T> | null,
-    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null) {
+  constructor(controls: T,
+    validatorOrOpts?: ValidatorFn<ControlsStaticType<T>> | ValidatorFn<ControlsStaticType<T>>[] | AbstractControlOptions<ControlsStaticType<T>> | null,
+    asyncValidator?: AsyncValidatorFn<ControlsStaticType<T>> | AsyncValidatorFn<ControlsStaticType<T>>[] | null) {
     super()
   };
 
@@ -967,7 +975,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    * @param name The control name to replace in the collection
    * @param control Provides the control for the given name
    */
-  setControl<K extends keyof T>(name: K, control: AbstractControl<T[K]>): void {
+  setControl<K extends keyof T>(name: K, control: T[K]): void {
   };
 
   /**
@@ -1018,7 +1026,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    * observables emit events with the latest status and value when the control value is updated.
    * When false, no events are emitted.
    */
-  setValue(value: T, options?: {
+  setValue(value: Static<this>, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void {
@@ -1057,7 +1065,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    * The configuration options are passed to the {@link AbstractControl#updateValueAndValidity
    * updateValueAndValidity} method.
    */
-  patchValue(value: Partial<T>, options?: {
+  patchValue(value: Partial<ControlsStaticType<T>>, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void {
@@ -1120,7 +1128,7 @@ export class FormGroup<T> extends AbstractControl<T> {
    * console.log(this.form.get('first').status);  // 'DISABLED'
    * ```
    */
-  reset(value?: Partial<T>, options?: {
+  reset(value?: Partial<ControlsStaticType<T>>, options?: {
     onlySelf?: boolean;
     emitEvent?: boolean;
   }): void {
@@ -1133,18 +1141,9 @@ export class FormGroup<T> extends AbstractControl<T> {
    * The `value` property is the best way to get the value of the group, because
    * it excludes disabled controls in the `FormGroup`.
    */
-  getRawValue(): T {
+  getRawValue(): Static<this> {
     throw undefined
   };
-
-  get<K1 extends keyof T>(path: [K1]): AbstractControl<T[K1]>;
-  get<K1 extends keyof T, K2 extends keyof T[K1]>(path: [K1, K2]): AbstractControl<T[K1][K2]> | null;
-  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(path: [K1, K2, K3]): AbstractControl<T[K1][K2][K3]> | null;
-  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(path: [K1, K2, K3, K4]): AbstractControl<T[K1][K2][K3][K4]> | null;
-  get<K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4]>(path: [K1, K2, K3, K4, K5]): AbstractControl<T[K1][K2][K3][K4][K5]> | null;
-  get<K extends keyof T>(path: K): AbstractControl<T[K]>;
-  get(path: any): any {
-  }
 }
 
 
@@ -1243,8 +1242,8 @@ export class FormGroup<T> extends AbstractControl<T> {
  * console.log(control.status); // 'DISABLED'
  *
  */
-export class FormControl<T> extends AbstractControl<T> {
-
+export class FormControl<T> extends AbstractControl<T, void> {
+  
   /**
    * Creates a new `FormControl` instance.
    *
@@ -1397,7 +1396,9 @@ export class FormBuilder {
    * * `asyncValidator`: A single async validator or array of async validator functions
    *
    */
-  group<T>(controlsConfig: ControlsConfig<T>, options?: FormBuilderFormGroupOptions<T> | AbstractControlOptions<T>): FormGroup<T> {
+  group<T extends Controls<any>>(controlsConfig: T, options?: FormBuilderFormGroupOptions<ControlsStaticType<T>> | AbstractControlOptions<ControlsStaticType<T>>): FormGroup<T>;
+  group<T>(controlsConfig: ControlsConfig<T>, options?: FormBuilderFormGroupOptions<T> | AbstractControlOptions<T>): FormGroup<Controls<T>>;
+  group(controlsConfig: any, options?: any): any {
     throw undefined
   };
 
@@ -1445,9 +1446,13 @@ export class FormBuilder {
    * @param asyncValidator A single async validator or array of async validator
    * functions.
    */
+  array<T extends AbstractControl<any>>(controlsConfig: Array<T>,
+    validatorOrOpts?: ValidatorFn<Static<T>> | ValidatorFn<Static<T>>[] | null,
+    asyncValidator?: AsyncValidatorFn<Static<T>> | AsyncValidatorFn<Static<T>>[] | null): FormArray<T>;
   array<T>(controlsConfig: ControlConfig<T>[],
     validatorOrOpts?: ValidatorFn<T> | ValidatorFn<T>[] | null,
-    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): FormArray<T> {
+    asyncValidator?: AsyncValidatorFn<T> | AsyncValidatorFn<T>[] | null): FormArray<AbstractControl<T>>;
+  array(controlsConfig: any): any {
     throw undefined
   };
 }
